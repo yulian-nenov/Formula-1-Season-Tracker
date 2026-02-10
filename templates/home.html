@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <h2>WELCOME TO</h2>
+            <h1>F1 SEASON <br> TRACKER</h1>
+            <p>Create and manage your very own <br> formula 1 season.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn primary">Get Started</a>
+                <a href="#" class="btn secondary">View Calendar</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features container">
+    <div class="feature-card">
+        <img src="{% static 'images/chequered_flag.png' %}" alt="Chequered flag">
+        <h3>Manage Teams</h3>
+        <p>Add and organize teams for <br> your custom season.</p>
+        <a href="#" class="card-btn dark-btn">View Teams</a>
+    </div>
+
+    <div class="feature-card">
+        <img src="{% static 'images/helmet.png' %}" alt="Helmet">
+        <h3>Track Drivers</h3>
+        <p>Add drivers, assign them to teams, <br> and track stats.</p>
+        <a href="#" class="card-btn">Browse Drivers</a>
+    </div>
+
+    <div class="feature-card">
+        <img src="{% static 'images/schedule.png' %}" alt="Schedule">
+        <h3>Schedule Races</h3>
+        <p>Plan, view all race events in your <br> season and add race results.</p>
+        <a href="#" class="card-btn">See Races</a>
+    </div>
+</section>
+
+<section class="latest-results container">
+    <h2>Latest Race Results</h2>
+
+    <div class="results-card">
+        <h3>British Grand Prix</h3>
+        <p>Round 10 · Silverstone Circuit</p>
+
+        <ol class="results-list">
+            <li>Max Verstappen — 25 pts</li>
+            <li>Charles Leclerc — 18 pts</li>
+            <li>Lewis Hamilton — 15 pts</li>
+        </ol>
+
+        <a href="#" class="btn small">View Full Results</a>
+    </div>
+</section>
+
+{% endblock %}

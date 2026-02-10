@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>F1 Season Tracker</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="container nav-content">
+        <div class="logo">
+            <a href="#"><img src="{% static 'images/formula-logo.png' %}" alt=""></a>
+
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Teams</a></li>
+                <li><a href="#">Drivers</a></li>
+                <li><a href="#">Races</a></li>
+                <li><a href="#" class="cta">Standings</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+{% block content %}
+
+{% endblock %}
+
+<footer class="footer">
+    <div class="container footer-content">
+        <p>© 2026 F1 Season Tracker</p>
+        <p>Fantasy Formula 1 Management System</p>
+    </div>
+</footer>
+
+</body>
+</html>
