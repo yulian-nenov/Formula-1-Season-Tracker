@@ -59,13 +59,13 @@ body > * {
 
 /* HERO */
 .hero {
-    height: 65vh;
-    background: url("/static/images/formula_car1.png") center/cover no-repeat;
+    height: 57vh;
+    background: url("../images/formula_car1.png") center/cover no-repeat;
     position: relative;
 }
 
 .hero-overlay {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.2);
     height: 100%;
     display: flex;
     align-items: center;

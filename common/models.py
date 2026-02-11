@@ -1,3 +1,21 @@
 from django.db import models
 
-# Create your models here.
+class BaseStats(models.Model):
+    total_points = models.PositiveIntegerField(
+        default=0,
+    )
+
+    podiums = models.PositiveIntegerField(
+        default=0,
+    )
+
+    dnfs = models.PositiveIntegerField(
+        default=0,
+    )
+
+    wins = models.PositiveIntegerField(
+        default=0,
+    )
+
+    class Meta:
+        abstract = True
