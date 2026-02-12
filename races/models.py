@@ -13,7 +13,15 @@ class Track(models.Model):
         max_length=100,
     )
 
-    length_km = models.PositiveIntegerField()
+    image_url = models.URLField(
+        null=True,
+        blank=True,
+    )
+
+    length_km = models.DecimalField(
+        max_digits=3,
+        decimal_places=2
+    )
 
 class Race(models.Model):
     name = models.CharField(
@@ -42,7 +50,7 @@ class Race(models.Model):
     date = models.DateField()
 
     drivers = models.ManyToManyField(
-        "Driver",
+        "drivers.Driver",
         through="Result",
         related_name="races",
     )
@@ -56,7 +64,7 @@ class Result(models.Model):
     )
 
     driver = models.ForeignKey(
-        "Driver",
+        "drivers.Driver",
         on_delete=models.CASCADE,
         related_name="results",
     )

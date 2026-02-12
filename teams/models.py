@@ -1,4 +1,4 @@
-from django.core.validators import MinLengthValidator, MinValueValidator
+from django.core.validators import MinLengthValidator
 from django.db import models
 
 from common.models import BaseStats
@@ -34,12 +34,10 @@ class CarModel(models.Model):
         max_length=100,
     )
 
-    year = models.PositiveIntegerField(
-        max_length=5,
-    )
+    year = models.PositiveIntegerField()
 
     team = models.ForeignKey(
-        Team,
+        "Team",
         on_delete=models.CASCADE,
         related_name='cars',
     )

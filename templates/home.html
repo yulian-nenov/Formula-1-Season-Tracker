@@ -21,21 +21,21 @@
         <img src="{% static 'images/chequered_flag.png' %}" alt="Chequered flag">
         <h3>Manage Teams</h3>
         <p>Add and organize teams for <br> your custom season.</p>
-        <a href="#" class="card-btn dark-btn">View Teams</a>
+        <a href="{% url 'teams:list' %}" class="card-btn dark-btn">View Teams</a>
     </div>
 
     <div class="feature-card">
         <img src="{% static 'images/helmet.png' %}" alt="Helmet">
         <h3>Track Drivers</h3>
         <p>Add drivers, assign them to teams, <br> and track stats.</p>
-        <a href="#" class="card-btn">Browse Drivers</a>
+        <a href="{% url 'drivers:list' %}" class="card-btn">Browse Drivers</a>
     </div>
 
     <div class="feature-card">
         <img src="{% static 'images/schedule.png' %}" alt="Schedule">
         <h3>Schedule Races</h3>
         <p>Plan, view all race events in your <br> season and add race results.</p>
-        <a href="#" class="card-btn">See Races</a>
+        <a href="{% url 'races:race_list' %}" class="card-btn">See Races</a>
     </div>
 </section>
 
