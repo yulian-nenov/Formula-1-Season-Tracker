@@ -6,37 +6,19 @@
     <meta charset="UTF-8">
     <title>F1 Season Tracker</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/formula-logo-icon.png' %}">
 </head>
 <body>
 
-<header class="navbar">
-    <div class="container nav-content">
-        <div class="logo">
-            <a href="{% url 'common:home' %}"><img src="{% static 'images/formula-logo.png' %}" alt=""></a>
+{% include 'shared/nav.html' %}
 
-        </div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="{% url 'common:home' %}">Home</a></li>
-                <li><a href="{% url 'teams:list' %}">Teams</a></li>
-                <li><a href="{% url 'drivers:list' %}">Drivers</a></li>
-                <li><a href="{% url 'races:race_list' %}">Races</a></li>
-                <li><a href="{% url 'races:standings' %}" class="cta">Standings</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
-
+<div class="main-container">
 {% block content %}
 
 {% endblock %}
+</div>
 
-<footer class="footer">
-    <div class="container footer-content">
-        <p>© 2026 F1 Season Tracker</p>
-        <p>Fantasy Formula 1 Management System</p>
-    </div>
-</footer>
+{% include 'shared/footer.html' %}
 
 </body>
 </html>

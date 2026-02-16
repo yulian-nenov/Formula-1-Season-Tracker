@@ -1,21 +1,8 @@
 from django.db import models
 
-class BaseStats(models.Model):
-    total_points = models.PositiveIntegerField(
-        default=0,
-    )
-
-    podiums = models.PositiveIntegerField(
-        default=0,
-    )
-
-    dnfs = models.PositiveIntegerField(
-        default=0,
-    )
-
-    wins = models.PositiveIntegerField(
-        default=0,
-    )
+class BaseTimeStamp(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True

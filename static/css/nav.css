@@ -1,0 +1,31 @@
+.navbar {
+    background-color: #0b0e1a;
+    padding: 16px 0;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-links .cta {
+    background-color: #e10600;
+    padding: 8px 14px;
+    border-radius: 4px;
+}

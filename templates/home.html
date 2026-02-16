@@ -18,7 +18,7 @@
 
 <section class="features container">
     <div class="feature-card">
-        <img src="{% static 'images/chequered_flag.png' %}" alt="Chequered flag">
+        <img src="{% static 'images/chequered-flag.png' %}" alt="Chequered flag">
         <h3>Manage Teams</h3>
         <p>Add and organize teams for <br> your custom season.</p>
         <a href="{% url 'teams:list' %}" class="card-btn dark-btn">View Teams</a>
@@ -43,16 +43,21 @@
     <h2>Latest Race Results</h2>
 
     <div class="results-card">
-        <h3>British Grand Prix</h3>
-        <p>Round 10 · Silverstone Circuit</p>
+        <h3>{{ latest_race.name }}</h3>
+        <p>Round {{ latest_race.round_number }} · {{ latest_race.track.name }} Circuit</p>
 
-        <ol class="results-list">
-            <li>Max Verstappen — 25 pts</li>
-            <li>Charles Leclerc — 18 pts</li>
-            <li>Lewis Hamilton — 15 pts</li>
-        </ol>
+        <ul class="results-list">
+            {% for result in latest_race.results.all|slice:":3" %}
+                <li>
+                    {{ result.finishing_position }}.
+                    {{ result.driver.nationality }}
+                    — <strong>{{ result.driver.name }}</strong>
+                    — {{ result.points_awarded }} pts
+                </li>
+            {% endfor %}
+        </ul>
 
-        <a href="#" class="btn small">View Full Results</a>
+        <a href="{% url 'races:race_details' latest_race.pk %}" class="btn small">View Full Results</a>
     </div>
 </section>
 

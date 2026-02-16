@@ -1,6 +1,8 @@
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Q
 
+from common.models import BaseTimeStamp
 from races.choices import WeatherChoices, StatusChoices
 
 
@@ -20,10 +22,13 @@ class Track(models.Model):
 
     length_km = models.DecimalField(
         max_digits=3,
-        decimal_places=2
+        decimal_places=2,
+        validators=[
+            MinValueValidator(1),
+        ]
     )
 
-class Race(models.Model):
+class Race(BaseTimeStamp):
     name = models.CharField(
         max_length=100,
     )
@@ -47,7 +52,7 @@ class Race(models.Model):
 
     laps = models.PositiveIntegerField()
 
-    date = models.DateField()
+    date = models.DateTimeField()
 
     drivers = models.ManyToManyField(
         "drivers.Driver",
@@ -98,8 +103,24 @@ class Result(models.Model):
         choices=StatusChoices.choices,
     )
 
+    @property
+    def display_finishing_position(self) -> str:
+        if self.status in ['DNF', 'DSQ', 'DNS']:
+            return self.get_status_display()
+        return 'P' + str(self.finishing_position)
+
     class Meta:
         unique_together = [
             ("race", "driver"),
             ("race", "finishing_position")
+        ]
+
+        ordering = ["finishing_position"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=["race"],
+                condition=Q(fastest_lap=True),
+                name="unique_fastest_lap_per_race"
+            )
         ]

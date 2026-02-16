@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container">
+        <section class="page-header">
+            <h1 class="page-title">F1 Teams</h1>
+            <a href="{% url 'teams:create' %}" class="btn primary">+ Add Team</a>
+        </section>
+
+        <section class="teams-section">
+            <div class="teams-wrapper">
+                {% for team in teams %}
+                    <div class="team-card" style="background: {{ team.team_color }}">
+                        <div class="team-top">
+                            {% if team.logo_image_url %}
+                                <img src="{{ team.logo_image_url }}" alt="{{ team.name }}">
+                            {% else %}
+                                <img src="{% static 'images/formula-logo.png' %}" alt="Default Logo">
+                            {% endif %}
+                            <h2>{{ team.name }}</h2>
+                        </div>
+                        <hr>
+                        <p><strong>Country:</strong> {{ team.base_country }}</p>
+                        <p><strong>Team Principal:</strong> {{ team.principal }}</p>
+                        <p><strong>Wins:</strong> {{ team.wins }}</p>
+
+                        <div class="team-actions">
+                            <a href="{% url 'teams:details' team.pk %}" class="card-btn ">Details</a>
+                            <a href="{% url 'teams:edit' team.pk %}" class="card-btn ">Edit</a>
+                            <a href="{% url 'teams:delete' team.pk %}" class="card-btn dark-btn">Delete</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <h2>No teams available yet.</h2>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

@@ -1,14 +1,21 @@
 from django.core.validators import MinLengthValidator
 from django.db import models
 
-from common.models import BaseStats
+from common.models import BaseTimeStamp
 from teams.choices import TeamColorChoices
 
 
-class Team(BaseStats):
+class Team(BaseTimeStamp):
     name = models.CharField(
         max_length=100,
         unique=True,
+        validators=[
+            MinLengthValidator(3)
+        ]
+    )
+
+    principal = models.CharField(
+        max_length=100,
         validators=[
             MinLengthValidator(3)
         ]
@@ -29,24 +36,26 @@ class Team(BaseStats):
 
     logo_image_url = models.URLField()
 
+
 class CarModel(models.Model):
     name = models.CharField(
+        unique=True,
         max_length=100,
     )
 
     year = models.PositiveIntegerField()
 
-    team = models.ForeignKey(
+    team = models.OneToOneField(
         "Team",
         on_delete=models.CASCADE,
-        related_name='cars',
+        related_name='car',
     )
 
     power_unit = models.CharField(
         max_length=100,
     )
 
-    is_being_used = models.BooleanField(
+    in_use = models.BooleanField(
         null=True,
         blank=True,
         default=False,

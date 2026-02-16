@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="container team-detail">
+
+    <a href="{% url 'teams:list' %}" class="back-link">← Back to Teams</a>
+
+    <!-- TEAM HEADER -->
+    <div class="feature-card team-header-card">
+        <div class="team-header-left">
+            {% if team.logo_image_url %}
+                <img src="{{ team.logo_image_url }}" alt="{{ team.name }}">
+            {% else %}
+                <img src="{% static 'images/formula-logo.png' %}" alt="Default Logo">
+            {% endif %}
+        </div>
+
+        <div class="team-header-right">
+            <h1>{{ team.name }}</h1>
+            <p><img class="location-icon" src="{% static 'images/location-icon.png' %}" alt="Location icon"><strong>{{ team.base_country }}</strong></p>
+            <p><strong>Principal:</strong> {{ team.principal }}</p>
+            <p><strong>Engine Supplier:</strong> {{ team.engine_supplier }}</p>
+
+            <div class="team-actions-bottom">
+                    <a href="{% url 'teams:edit' team.pk %}" class="card-btn ">Edit Team</a>
+                    <a href="{% url 'teams:delete' team.pk %}" class="card-btn dark-btn">Delete Team</a>
+
+                    <div class="created-edited">
+                        <p>Created: {{ team.created_at }}</p>
+                        <p>Edited: {{ team.updated_at }}</p>
+                    </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- CONTENT SECTION -->
+    <div class="team-content">
+
+        <!-- DRIVERS -->
+        <div class="feature-card team-drivers">
+            <h2>Current Drivers</h2>
+
+            <div class="drivers-wrapper">
+                {% for driver in team.drivers.all %}
+                    <div class="driver-card">
+                        {% if driver.image %}
+                            <img src="{{ driver.image }}" alt="{{ driver.name }}">
+                        {% endif %}
+                        <a href="{% url 'drivers:details' driver.pk %}"><h3>{{ driver.name }}</h3></a>
+                    </div>
+                {% empty %}
+                    <p>No drivers assigned.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- RECENT RESULTS -->
+        <div class="feature-card team-results">
+            <h2>Recent Results</h2>
+
+            {% for race in recent_races %}
+                <div class="result-item">
+                    <h3>{{ race.name }}</h3>
+                    <p>Round {{ race.round_number }} · {{ race.track.name }} Circuit</p>
+                    <div class="driver-positions">
+                        {% for result in race.results.all %}
+                                <p><strong>{{ result.driver.name }}:</strong> {{ result.display_finishing_position }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No results yet.</p>
+            {% endfor %}
+
+            <a href="#" class="btn primary small">View All Results</a>
+
+        </div>
+    </div>
+
+    <div class="team-content">
+        <div class="feature-card team-stats">
+            <h2>Team Statistics</h2>
+            <p><strong>Team Points:</strong> {{ team.points }}</p>
+            <p><strong>Total Wins:</strong> {{ team.wins }}</p>
+            <p><strong>Total Podiums:</strong> {{ team.podiums }}</p>
+            <p><strong>Total DNFs:</strong> {{ team.dnfs }} </p>
+        </div>
+
+        <div class="feature-card car-info">
+            <h2>Car Model Information</h2>
+            <div class="cars-container">
+                    {% if team.car %}
+                        <div class="car">
+                            <h3>{{ team.car.name }}</h3>
+                            <p><strong>Year: </strong>{{ team.car.year }}</p>
+                            <p><strong>Power Unit: </strong>{{ team.car.power_unit }}</p>
+                            {% if team.car.in_use %}
+                                <span class="status-badge status-badge--active">Model in use</span>
+                            {% else %}
+                                <span class="status-badge status-badge--inactive">Model not in use</span>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <p>No car models yet.</p>
+                    {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+
+
+</section>
+
+{% endblock %}

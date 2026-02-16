@@ -31,7 +31,9 @@
                         <div class="form-group">
                             {{ field.label_tag }}
                             {{ field }}
-                            {{ field.errors }}
+                            {% if form.is_bound %}
+                                {{ form.errors }}
+                            {% endif %}
                         </div>
                         {% endif %}
                 {% endfor %}

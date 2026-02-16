@@ -1,0 +1,62 @@
+.btn {
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.primary {
+    background-color: #e10600;
+    color: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.primary:hover {
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+
+}
+
+.secondary {
+    background-color: #fff;
+    color: #000;
+    transition: box-shadow 0.3s ease;
+
+}
+
+.secondary:hover {
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+
+}
+
+.small {
+    padding: 8px 14px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.card-btn {
+    text-decoration: none;
+    color: #121B31;
+    border: 1px solid #121B31;
+    padding: 0.5em 2em;
+    border-radius: 0.3em;
+    font-weight: bold;
+    transition: box-shadow 0.3s ease;
+
+}
+
+.card-btn:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+
+}
+
+.dark-btn {
+    background: #121B31;
+    padding: 0.5em 2em;
+    color: white;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}

@@ -1,7 +1,14 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-# Create your views here.
+from races.models import Race
+
 
 def home(request: HttpRequest) -> HttpResponse:
-    return render(request, 'home.html')
+    latest_race = Race.objects.order_by('-date').prefetch_related("results__driver").first()
+
+    context = {
+        'latest_race': latest_race,
+    }
+
+    return render(request, 'home.html', context)
