@@ -1,0 +1,19 @@
+{% load static %}
+
+<header class="navbar">
+    <div class="container nav-content">
+        <div class="logo">
+            <a href="{% url 'common:home' %}"><img src="{% static 'images/formula-logo.png' %}" alt=""></a>
+
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{% url 'common:home' %}">Home</a></li>
+                <li><a href="{% url 'teams:list' %}">Teams</a></li>
+                <li><a href="{% url 'drivers:list' %}">Drivers</a></li>
+                <li><a href="{% url 'races:race_list' %}">Races</a></li>
+                <li><a href="{% url 'races:standings' %}" class="cta">Standings</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
