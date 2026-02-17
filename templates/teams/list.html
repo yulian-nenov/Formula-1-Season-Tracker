@@ -10,7 +10,7 @@
         </section>
 
         <section class="teams-section">
-            <div class="teams-wrapper">
+            <div class="wrapper">
                 {% for team in teams %}
                     <div class="team-card" style="background: {{ team.team_color }}">
                         <div class="team-top">
@@ -26,10 +26,8 @@
                         <p><strong>Team Principal:</strong> {{ team.principal }}</p>
                         <p><strong>Wins:</strong> {{ team.wins }}</p>
 
-                        <div class="team-actions">
+                        <div class="actions">
                             <a href="{% url 'teams:details' team.pk %}" class="card-btn ">Details</a>
-                            <a href="{% url 'teams:edit' team.pk %}" class="card-btn ">Edit</a>
-                            <a href="{% url 'teams:delete' team.pk %}" class="card-btn dark-btn">Delete</a>
                         </div>
                     </div>
                 {% empty %}

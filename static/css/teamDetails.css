@@ -10,7 +10,7 @@
     font-weight: bold;
 }
 
-.team-header-card {
+.header-card {
     display: flex;
     align-items: center;
     gap: 30px;
@@ -22,7 +22,7 @@
     height: 100px;
 }
 
-.team-header-right h1 {
+.header-right h1 {
     font-size: 42px;
     margin-bottom: 10px;
 }
@@ -89,7 +89,7 @@
     margin-bottom: 0.5em;
 }
 
-.team-actions-bottom {
+.actions-bottom {
     display: flex;
     gap: 1em;
     margin-top: 0.5em;

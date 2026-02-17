@@ -36,6 +36,9 @@ class Team(BaseTimeStamp):
 
     logo_image_url = models.URLField()
 
+    def __str__(self):
+        return self.name
+
 
 class CarModel(models.Model):
     name = models.CharField(

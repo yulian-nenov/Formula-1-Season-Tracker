@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="container team-detail">
+
+    <a href="{% url 'drivers:list' %}" class="back-link">← Back to Drivers</a>
+
+    <div class="feature-card header-card">
+        <div class="driver-top">
+            {% if driver.image %}
+                <img src="{{ driver.image }}" alt="{{ driver.name }}">
+            {% else %}
+                <img src="{% static 'images/formula-logo.png' %}" alt="Default Logo">
+            {% endif %}
+        </div>
+
+        <div class="header-right driver-header-right">
+            <h1><span class="driver-number">{{ driver.number }}  </span>{{ driver.name }}</h1>
+            <p><img class="location-icon" src="{% static 'images/location-icon.png' %}" alt="Location icon"><strong>{{ driver.nationality }}</strong></p>
+            <p><strong>Team:</strong> {{ driver.team.name }}</p>
+            {% if not driver.rookie_status %}
+                <span class="status-badge status-badge--active">Driver is not a rookie</span>
+            {% else %}
+                <span class="status-badge status-badge--inactive">Driver is a rookie</span>
+            {% endif %}
+
+            <div class="actions-bottom">
+                    <a href="{% url 'drivers:edit' driver.pk %}" class="card-btn ">Edit Driver</a>
+                    <a href="{% url 'drivers:delete' driver.pk %}" class="card-btn dark-btn">Delete Driver</a>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="team-content">
+        <div class="feature-card team-results">
+            <h2>Recent Results</h2>
+
+            {% for result in recent_results %}
+                <div class="result-item">
+                    <h3>{{ result.race.name }}</h3>
+                    <p>Round {{ result.race.round_number }} · {{ result.race.track.name }} Circuit</p>
+                    <p><strong>{{ driver.name }}:</strong> {{ result.display_finishing_position }}</p>
+                    <a href="#" class="btn ">Full Results</a>
+                </div>
+            {% empty %}
+                <p>No results yet.</p>
+            {% endfor %}
+        </div>
+        <div class="feature-card team-stats">
+            <h2>Driver Statistics</h2>
+            <p><strong>Total Points:</strong> {{ driver.total_points }}</p>
+            <p><strong>Wins:</strong> {{ driver.wins }}</p>
+            <p><strong>Podiums:</strong> {{ driver.podiums }}</p>
+            <p><strong>DNFs:</strong> {{ driver.dnfs }} </p>
+        </div>
+    </div>
+
+
+
+</section>
+
+{% endblock %}

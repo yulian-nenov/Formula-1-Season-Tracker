@@ -21,6 +21,6 @@ class AvailableSlotValidator:
 
         self._max_value = value
 
-    def __call__(self, value: Team):
-        if value.drivers.count() >= self.max_value:
+    def __call__(self, value: int):
+        if Team.objects.get(id=value).drivers.count() > self.max_value:
             raise ValidationError(self.message)

@@ -8,7 +8,7 @@
     <a href="{% url 'teams:list' %}" class="back-link">← Back to Teams</a>
 
     <!-- TEAM HEADER -->
-    <div class="feature-card team-header-card">
+    <div class="feature-card header-card">
         <div class="team-header-left">
             {% if team.logo_image_url %}
                 <img src="{{ team.logo_image_url }}" alt="{{ team.name }}">
@@ -17,13 +17,13 @@
             {% endif %}
         </div>
 
-        <div class="team-header-right">
+        <div class="header-right">
             <h1>{{ team.name }}</h1>
             <p><img class="location-icon" src="{% static 'images/location-icon.png' %}" alt="Location icon"><strong>{{ team.base_country }}</strong></p>
             <p><strong>Principal:</strong> {{ team.principal }}</p>
             <p><strong>Engine Supplier:</strong> {{ team.engine_supplier }}</p>
 
-            <div class="team-actions-bottom">
+            <div class="actions-bottom">
                     <a href="{% url 'teams:edit' team.pk %}" class="card-btn ">Edit Team</a>
                     <a href="{% url 'teams:delete' team.pk %}" class="card-btn dark-btn">Delete Team</a>
 
@@ -111,9 +111,6 @@
 
         </div>
     </div>
-
-    <!-- ACTION BUTTONS -->
-
 
 </section>
 

@@ -64,7 +64,7 @@ def team_create(request: HttpRequest) -> HttpResponse:
         "button_text": "Create Team"
     }
 
-    return render(request, "shared/form.html", context)
+    return render(request, "teams/team-form.html", context)
 
 def team_edit(request: HttpRequest, pk: int) -> HttpResponse:
     team = Team.objects.get(pk=pk)
@@ -85,7 +85,7 @@ def team_edit(request: HttpRequest, pk: int) -> HttpResponse:
             car.team = team
             car_form.save()
 
-            return redirect("teams:list")
+            return redirect("teams:details", team.pk)
 
     context = {
         "team_form": team_form,
@@ -94,12 +94,16 @@ def team_edit(request: HttpRequest, pk: int) -> HttpResponse:
         "button_text": "Edit Team"
     }
 
-    return render(request, "shared/form.html", context)
+    return render(request, "teams/team-form.html", context)
 
 
 def team_delete(request: HttpRequest, pk: int) -> HttpResponse:
     team = Team.objects.get(pk=pk)
-    car = team.car
+
+    try:
+        car = team.car
+    except CarModel.DoesNotExist:
+        car = None
 
     team_form = TeamDeleteForm(request.POST or None, instance=team, prefix='team')
     car_form = CarDeleteForm(request.POST or None, instance=car, prefix='car')
@@ -116,4 +120,4 @@ def team_delete(request: HttpRequest, pk: int) -> HttpResponse:
         "button_text": "Delete Team"
     }
 
-    return render(request, 'shared/form.html', context)
+    return render(request, 'teams/team-form.html', context)

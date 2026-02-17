@@ -29,6 +29,7 @@ class Driver(models.Model):
 
     rookie_status = models.BooleanField(
         default=False,
+        null=True,
         blank=True,
     )
 

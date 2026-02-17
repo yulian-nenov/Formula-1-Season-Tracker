@@ -9,7 +9,7 @@
 }
 
 /* FORM GROUP */
-.form-group {
+.form-group > div {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
