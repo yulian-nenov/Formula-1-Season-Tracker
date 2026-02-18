@@ -37,10 +37,8 @@
         </div>
     </div>
 
-    <!-- CONTENT SECTION -->
     <div class="team-content">
 
-        <!-- DRIVERS -->
         <div class="feature-card team-drivers">
             <h2>Current Drivers</h2>
 
@@ -58,8 +56,7 @@
             </div>
         </div>
 
-        <!-- RECENT RESULTS -->
-        <div class="feature-card team-results">
+        <div class="feature-card race-results">
             <h2>Recent Results</h2>
 
             {% for race in recent_races %}
@@ -76,7 +73,7 @@
                 <p>No results yet.</p>
             {% endfor %}
 
-            <a href="#" class="btn primary small">View All Results</a>
+            <a href="{% url 'races:race_list' %}" class="btn primary small">View All Results</a>
 
         </div>
     </div>

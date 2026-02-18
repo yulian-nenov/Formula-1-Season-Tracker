@@ -37,7 +37,6 @@ def driver_create(request: HttpRequest) -> HttpResponse:
     context = {
         'form': form,
         'page_title': 'Create Driver',
-        'button_text': 'Create Driver'
     }
 
     return render(request, 'drivers/driver-form.html', context)
@@ -53,7 +52,6 @@ def driver_edit(request: HttpRequest, pk: int) -> HttpResponse:
     context = {
         'form': form,
         'page_title': 'Edit Driver',
-        'button_text': 'Edit Driver'
     }
 
     return render(request, 'drivers/driver-form.html', context)
@@ -69,7 +67,6 @@ def driver_delete(request: HttpRequest, pk: int) -> HttpResponse:
     context = {
         'form': form,
         'page_title': 'Delete Driver',
-        'button_text': 'Delete Driver'
     }
 
     return render(request, 'drivers/driver-form.html', context)

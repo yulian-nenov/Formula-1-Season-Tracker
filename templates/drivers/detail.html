@@ -35,7 +35,7 @@
     </div>
 
     <div class="team-content">
-        <div class="feature-card team-results">
+        <div class="feature-card race-results">
             <h2>Recent Results</h2>
 
             {% for result in recent_results %}
@@ -43,7 +43,7 @@
                     <h3>{{ result.race.name }}</h3>
                     <p>Round {{ result.race.round_number }} · {{ result.race.track.name }} Circuit</p>
                     <p><strong>{{ driver.name }}:</strong> {{ result.display_finishing_position }}</p>
-                    <a href="#" class="btn ">Full Results</a>
+                    <a href="{% url 'races:race_details' result.race.pk %}" class="btn ">Full Results</a>
                 </div>
             {% empty %}
                 <p>No results yet.</p>

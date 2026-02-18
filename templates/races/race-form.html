@@ -11,25 +11,14 @@
 
     <div class="feature-card form-card">
         <form method="POST" enctype="multipart/form-data">
-            <h2>Team Information</h2>
-            {% csrf_token %}
-
+            <h2>{{ model }} Information</h2>
 
             <div class="form-group">
 
-                {{ team_form }}
+                {{ form }}
+                {% csrf_token %}
 
             </div>
-
-            {% if car_form %}
-                <h2>Car Information</h2>
-
-                <div class="form-group">
-
-                    {{ car_form }}
-
-                </div>
-            {% endif %}
 
             <div class="form-actions">
                 <button type="submit" class="btn primary">

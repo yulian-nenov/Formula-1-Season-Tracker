@@ -13,10 +13,10 @@ track_urls = [
 races_urls = [
     path('', race_list, name='race_list'),
     path('create/', race_create, name='race_create'),
-    path('<int:pk>', include([
+    path('<int:pk>/', include([
         path('', race_details, name='race_details'),
         path('edit/', race_edit, name='race_edit'),
-        path('', race_delete, name='race_delete'),
+        path('delete/', race_delete, name='race_delete'),
     ]))
 ]
 

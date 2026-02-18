@@ -28,12 +28,16 @@ class Track(models.Model):
         ]
     )
 
+    def __str__(self):
+        return self.name
+
 class Race(BaseTimeStamp):
     name = models.CharField(
         max_length=100,
     )
 
     round_number = models.PositiveIntegerField(
+        unique=True,
         validators=[
             MaxValueValidator(24)
         ],
@@ -80,6 +84,8 @@ class Result(models.Model):
         ]
     )
     finishing_position = models.PositiveIntegerField(
+        null=True,
+        blank=True,
         validators=[
             MaxValueValidator(20)
         ]

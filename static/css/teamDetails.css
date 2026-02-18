@@ -34,10 +34,10 @@
     margin-bottom: 1em;
 }
 
-.team-results {
+.race-results {
     flex: 1;
     min-width: 320px;
-    padding: 0.5em 1em;
+    padding: 1em;
 }
 
 .team-drivers {
@@ -73,7 +73,7 @@
     border-radius: 0 0 0.3em 0.3em;
 }
 
-.team-results > h2,
+.race-results > h2,
 .team-stats > h2,
 .car-info > h2 {
     margin-bottom: 1em;
@@ -81,8 +81,12 @@
 
 .result-item {
     margin-bottom: 15px;
-    padding-bottom: 10px;
+    padding: 0.5em 1em;
     border-bottom: 1px solid #ddd;
+}
+
+.result-item:hover {
+    background: #f5f5f5;
 }
 
 .result-item > p {

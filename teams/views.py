@@ -60,8 +60,6 @@ def team_create(request: HttpRequest) -> HttpResponse:
     context = {
         "team_form": team_form,
         "car_form": car_form,
-        "page_title": "Create Team",
-        "button_text": "Create Team"
     }
 
     return render(request, "teams/team-form.html", context)
@@ -91,7 +89,6 @@ def team_edit(request: HttpRequest, pk: int) -> HttpResponse:
         "team_form": team_form,
         "car_form": car_form,
         "page_title": "Edit Team",
-        "button_text": "Edit Team"
     }
 
     return render(request, "teams/team-form.html", context)
@@ -117,7 +114,6 @@ def team_delete(request: HttpRequest, pk: int) -> HttpResponse:
         "team_form": team_form,
         "car_form": car_form,
         "page_title": "Delete Team",
-        "button_text": "Delete Team"
     }
 
     return render(request, 'teams/team-form.html', context)

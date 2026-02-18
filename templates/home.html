@@ -49,7 +49,11 @@
         <ul class="results-list">
             {% for result in latest_race.results.all|slice:":3" %}
                 <li>
-                    {{ result.finishing_position }}.
+                    {% if result.status != "Finished" %}
+                        <span style="color: darkred"><strong>{{ result.status }}</strong></span>
+                    {% else %}
+                        <strong>{{ result.display_finishing_position }}.</strong>
+                    {% endif %}
                     {{ result.driver.nationality }}
                     — <strong>{{ result.driver.name }}</strong>
                     — {{ result.points_awarded }} pts
