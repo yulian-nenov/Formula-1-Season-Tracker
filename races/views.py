@@ -1,8 +1,8 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
-from races.forms import RaceCreateForm, RaceEditForm, RaceDeleteForm
-from races.models import Race
+from races.forms import RaceCreateForm, RaceEditForm, RaceDeleteForm, ResultCreateForm, ResultEditForm, ResultDeleteForm
+from races.models import Race, Result
 
 
 # Tracks
@@ -88,14 +88,54 @@ def race_delete(request: HttpRequest, pk: int) -> HttpResponse:
 
 # Results
 
-def result_add(request: HttpRequest, ) -> HttpResponse:
-    return render(request, 'races/results/result-add.html')
+def result_add(request: HttpRequest) -> HttpResponse:
+    form = ResultCreateForm(request.POST or None, request.FILES or None)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('races:race_list')
+
+    context = {
+        'form': form,
+        'page_title': 'Add Result',
+        'model': 'Result',
+    }
+
+    return render(request, 'races/race-form.html', context)
 
 def result_edit(request: HttpRequest, pk: int) -> HttpResponse:
-    return render(request, 'races/results/result-edit.html')
+    result = Result.objects.get(pk=pk)
+    form = ResultEditForm(request.POST or None, request.FILES or None, instance=result)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+
+        return redirect('races:race_details', result.race.pk)
+
+    context = {
+        'form': form,
+        'page_title': 'Edit Result',
+        'model': 'Result',
+    }
+
+    return render(request, 'races/race-form.html', context)
 
 def result_delete(request: HttpRequest, pk: int) -> HttpResponse:
-    return render(request, 'races/results/result-delete.html')
+    result = Result.objects.get(pk=pk)
+    form = ResultDeleteForm(request.POST or None, request.FILES or None, instance=result)
+
+    if request.method == 'POST' and form.is_valid():
+        result.delete()
+
+        return redirect('races:race_list')
+
+    context = {
+        'form': form,
+        'page_title': 'Delete Result',
+        'model': 'Result',
+    }
+
+    return render(request, 'races/race-form.html', context)
 
 # Standings
 

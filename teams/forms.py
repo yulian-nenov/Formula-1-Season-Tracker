@@ -12,6 +12,9 @@ class CarFormBase(forms.ModelForm):
     class Meta:
         model = CarModel
         exclude = ["team", 'id']
+        widgets = {
+            'in_use': forms.RadioSelect(choices=[(True, 'Yes'), (False, 'No')])
+        }
 
 class TeamCreateForm(TeamFormBase):
     pass

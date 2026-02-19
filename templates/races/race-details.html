@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load race_result_tags %}
 
 {% block content %}
     <div class="container">
@@ -46,24 +47,33 @@
                                 <th><h3>Points</h3></th>
                                 <th><h3>Team</h3></th>
                                 <th><h3>Nationality</h3></th>
+                                <th><h3>Qualifying <br> Position</h3></th>
+
                                 <th><h3>Actions</h3></th>
                             </tr>
 
                             {% for result in race.results.all %}
-                            <tr>
+                            <tr class="{{ result.finishing_position|podium_position }}">
                                 {% if result.status != "Finished" %}
                                     <td><span style="color: darkred"><strong>{{ result.status }}</strong></span></td>
                                 {% else %}
-                                    <td class="position-column"><strong>{{ result.finishing_position }}</strong></td>
+                                    <td class="position-column"><strong>
+                                        {{ result.finishing_position }}
+                                        {% if result.fastest_lap %}
+                                            <br>
+                                        	<span class="fastest-lap">Fastest Lap</span>
+                                        {% endif %}
+                                    </strong></td>
                                 {% endif %}
                                 <td>{{ result.driver.name }}</td>
                                 <td>{{ result.points_awarded }}</td>
                                 <td>{{ result.driver.team.name }}</td>
                                 <td>{{ result.driver.nationality }}</td>
+                                <td>{{ result.qualifying_position }}</td>
                                 <td>
                                     <div class="actions-bottom">
-                                        <a href="{% url 'races:result_edit' result.pk %}" class="card-btn ">Edit Result</a>
-                                        <a href="{% url 'races:result_delete' result.pk %}" class="card-btn dark-btn">Delete Result</a>
+                                        <a href="{% url 'races:result_edit' result.pk %}" class="btn ">Edit Result</a>
+                                        <a href="{% url 'races:result_delete' result.pk %}" class="btn ">Delete Result</a>
                                     </div>
                                 </td>
                             </tr>

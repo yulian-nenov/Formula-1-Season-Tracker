@@ -3,16 +3,46 @@ table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
     text-align: center;
+    font-weight: bold;
 }
 
 table {
-        width: 100%;
+    width: 100%;
 }
 
 .position-column {
     color: red;
 }
 
+.gold {
+    background: gold;
+}
+
+.silver {
+    background: silver;
+}
+
+.bronze {
+    background: #cd7f32;
+}
+
+.out-of-race {
+    color: darkgray;
+}
+
+.fastest-lap {
+    font-weight: normal;
+    color: white;
+    background: #800080;
+    padding: 0 0.3em;
+    border-radius: 0.5em;
+}
+
 table .actions-bottom {
     justify-content: center;
+    margin: 0;
+}
+
+table .actions-bottom .btn {
+    padding: 0;
 }

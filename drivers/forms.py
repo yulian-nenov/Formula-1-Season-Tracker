@@ -8,6 +8,12 @@ class DriverFormBase(forms.ModelForm):
         model = Driver
         exclude = ['total_points', 'podiums', 'wins', 'dnfs', 'wins']
 
+        widgets = {
+            'nationality': forms.TextInput(attrs={'placeholder': 'Enter 2 letter ISO code'}),
+            'image': forms.URLInput(attrs={'placeholder': 'Enter image URL'}),
+            'rookie_status': forms.RadioSelect(choices=[(True, 'Yes'), (False, 'No')])
+        }
+
 class DriverCreateForm(DriverFormBase):
     pass
 

@@ -59,7 +59,6 @@ class CarModel(models.Model):
     )
 
     in_use = models.BooleanField(
-        null=True,
         blank=True,
         default=False,
     )

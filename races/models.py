@@ -1,5 +1,5 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models
+from django.db import models, transaction
 from django.db.models import Q
 
 from common.models import BaseTimeStamp
@@ -64,6 +64,16 @@ class Race(BaseTimeStamp):
         related_name="races",
     )
 
+    def __str__(self) -> str:
+        return self.name
+
+    def delete(self, *args, **kwargs) -> None:
+        drivers = set(result.driver for result in self.results.all())
+        super().delete(*args, **kwargs)
+
+        for driver in drivers:
+            driver.recalculate_driver_stats()
+
 
 class Result(models.Model):
     race = models.ForeignKey(
@@ -115,10 +125,19 @@ class Result(models.Model):
             return self.get_status_display()
         return 'P' + str(self.finishing_position)
 
+    def save(self, *args, **kwargs) -> None:
+        super().save(*args, **kwargs)
+        self.driver.recalculate_driver_stats()
+
+    def delete(self, *args, **kwargs) -> None:
+        super().delete(*args, **kwargs)
+        self.driver.recalculate_driver_stats()
+
     class Meta:
         unique_together = [
             ("race", "driver"),
-            ("race", "finishing_position")
+            ("race", "finishing_position"),
+            ("race", "qualifying_position"),
         ]
 
         ordering = ["finishing_position"]
