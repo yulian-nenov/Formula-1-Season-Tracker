@@ -4,25 +4,25 @@
 
 1️⃣ Clone the Repository
 
-git clone <your-repository-url>\
-cd <project-folder>
+git clone <repository-url>\
 
 2️⃣ Create Virtual Environment
 
 Windows\
 python -m venv venv\
-venv\Scripts\activate\
+venv\Scripts\activate
+
 macOS / Linux\
 python3 -m venv venv\
 source venv/bin/activate
 
 3️⃣ Install Dependencies
 
+cp .env.template .env
 pip install -r requirements.txt
 
 4️⃣ Apply Migrations
 
-python manage.py makemigrations\
 python manage.py migrate
 
 5️⃣ (Optional) Load Sample Data

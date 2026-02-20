@@ -1,10 +1,28 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Page Not Found</title>
+    <link rel="stylesheet" href="{% static 'css/404.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/formula-logo-icon.png' %}">
 </head>
 <body>
-$END$
+
+<div class="error-container">
+    <div class="error-content">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Page Not Found</h2>
+        <p class="error-message">
+            Looks like this page spun off the track 🏎️
+            The page you’re looking for doesn’t exist.
+        </p>
+
+        <a href="{% url 'common:home' %}" class="home-btn">
+            Return to Home
+        </a>
+    </div>
+</div>
+
 </body>
 </html>
