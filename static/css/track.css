@@ -1,0 +1,19 @@
+.track-top img {
+    height: 170px;
+    margin: 0 auto;
+}
+
+.track-img-wrapper {
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    background: #f4f4f4;
+    border-radius: 0.5em;
+}
+
+.header-right .track-img {
+    display: block;
+    max-height: 1000px;
+    max-width: 60%;
+    padding: 2em;
+}

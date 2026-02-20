@@ -18,6 +18,7 @@
         <div class="header-right driver-header-right">
             <h1><span class="driver-number">{{ driver.number }}  </span>{{ driver.name }}</h1>
             <p><img class="location-icon" src="{% static 'images/location-icon.png' %}" alt="Location icon"><strong>{{ driver.nationality }}</strong></p>
+            <p><strong>Age:</strong> {{ driver.age }}</p>
             <p><strong>Team:</strong> {{ driver.team.name }}</p>
             {% if not driver.rookie_status %}
                 <span class="status-badge status-badge--active">Driver is not a rookie</span>

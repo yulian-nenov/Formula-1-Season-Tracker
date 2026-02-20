@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="container track-details">
+
+    <a href="{% url 'races:track_list' %}" class="back-link">← Back to Tracks</a>
+
+    <div class="feature-card header-card">
+        <div class="header-right">
+            <div class="track-img-wrapper">
+                {% if track.image_url %}
+                    <img class="track-img" src="{{ track.image_url }}" alt="{{ track.name }}">
+                {% else %}
+                    <img src="{% static 'images/formula-logo.png' %}" alt="Default Logo">
+                {% endif %}
+            </div>
+            <h1>{{ track.name }}</h1>
+            <hr>
+            <p><img class="location-icon" src="{% static 'images/location-icon.png' %}" alt="Location icon"><strong>{{ track.country }}</strong></p>
+            <p><strong>Length:</strong> {{ track.length_km }}km</p>
+            <p><strong>Latest Winner:</strong>
+                {% if latest_winner %}
+                	{{ latest_winner.driver.name }}  ·
+                    {{ latest_winner.driver.team.name }} @ {{ latest_winner.race.name }}
+                {% else %}
+                    No winners on this track yet.
+                {% endif %}</p>
+        </div>
+    </div>
+
+    <div class="team-content">
+
+
+        <div class="feature-card race-results">
+            <h2>Recent Results</h2>
+
+            {% for race in track.race_track.all %}
+                <div class="result-item">
+                    <h3>{{ race.name }}</h3>
+                    <p>Round {{ race.round_number }} · {{ race.track.name }} Circuit</p>
+                    <ul class="results-list">
+                    {% for result in race.results.all|slice:":3" %}
+                        <li>
+                            {% if result.status != "Finished" %}
+                                <span style="color: darkred"><strong>{{ result.status }}</strong></span>
+                            {% else %}
+                                <strong>{{ result.display_finishing_position }}.</strong>
+                            {% endif %}
+                            {{ result.driver.nationality }}
+                            — <strong>{{ result.driver.name }}</strong>
+                            — {{ result.points_awarded }} pts
+                        </li>
+                    {% endfor %}
+                    </ul>
+                <a href="{% url 'races:race_details' race.pk %}" class="btn small">View Full Results</a>
+                </div>
+            {% empty %}
+                <p>No results yet.</p>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

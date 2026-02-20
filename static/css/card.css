@@ -46,6 +46,13 @@
     padding-left: 20px;
 }
 
+.results-card hr {
+    margin: 0.5em 0;
+}
+
+.results-wrapper {
+    display: flex;
+}
 
 
 

@@ -31,6 +31,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
+    height: 100%;
+    align-content: center;
     margin-bottom: 1em;
 }
 

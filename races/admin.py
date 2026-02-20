@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from races.models import Track
+
+
+@admin.register(Track)
+class TrackAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'country', 'length_km', 'image_url']

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load race_result_tags %}
+
+{% block content %}
+    <div class="container">
+
+        <a href="{% url 'common:home' %}" class="back-link">← Back to Home</a>
+
+        <div class="team-content standings-content">
+            <div class="feature-card race-results">
+                <div class="page-header">
+                    <h2>Driver Standings</h2>
+                </div>
+
+                <table>
+                    <tr>
+                        <th><h3>Position</h3></th>
+                        <th><h3>Driver</h3></th>
+                        <th><h3>Points</h3></th>
+                        <th><h3>Nationality</h3></th>
+                        <th><h3>Team</h3></th>
+
+                    </tr>
+
+                    {% for driver in drivers %}
+                        <tr class="{{ forloop.counter|podium_position }}">
+                            <td class="position-column"><strong>{{ forloop.counter }}</strong></td>
+                            <td>{{ driver.name }}</td>
+                            <td>{{ driver.total_points }}</td>
+                            <td>{{ driver.nationality }}</td>
+                            <td>{{ driver.team.name }}</td>
+
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="feature-card race-results">
+                <div class="page-header">
+                    <h2>Team Standings</h2>
+                </div>
+
+                <table>
+                    <tr>
+                        <th><h3>Position</h3></th>
+                        <th><h3>Team</h3></th>
+                        <th><h3>Points</h3></th>
+                        <th><h3>Country</h3></th>
+                        <th><h3>Principal</h3></th>
+
+                    </tr>
+
+                    {% for team in teams %}
+                        <tr class="{{ forloop.counter|podium_position }}">
+                            <td class="position-column"><strong>{{ forloop.counter }}</strong></td>
+                            <td>{{ team.name }}</td>
+                            <td>{{ team.points }}</td>
+                            <td>{{ team.base_country }}</td>
+                            <td>{{ team.principal }}</td>
+
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

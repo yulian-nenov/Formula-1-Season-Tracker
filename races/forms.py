@@ -25,7 +25,7 @@ class ResultFormBase(forms.ModelForm):
             'fastest_lap': forms.RadioSelect(choices=[(True, 'Yes'), (False, 'No')]),
         }
 
-    def clean(self) -> dict:
+    def clean(self) -> None:
         cleaned = super().clean()
 
         finishing_position = cleaned.get('finishing_position')

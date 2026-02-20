@@ -1,17 +1,41 @@
+from django.db.models import Sum
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
+from drivers.models import Driver
 from races.forms import RaceCreateForm, RaceEditForm, RaceDeleteForm, ResultCreateForm, ResultEditForm, ResultDeleteForm
-from races.models import Race, Result
+from races.models import Race, Result, Track
+from teams.models import Team
 
 
 # Tracks
 
 def track_list(request: HttpRequest) -> HttpResponse:
-    return render(request, 'races/tracks/track-list.html')
+    tracks = Track.objects.all()
+
+    context = {
+        'tracks': tracks
+    }
+
+    return render(request, 'races/tracks/track-list.html', context)
 
 def track_details(request: HttpRequest, pk: int) -> HttpResponse:
-    return render(request, 'races/tracks/track-details.html')
+    track = Track.objects.prefetch_related('race_track').get(pk=pk)
+    latest_winner = (
+        Result.objects
+        .filter(
+            race__track=track,
+            finishing_position=1
+        ).order_by('-race__date')
+        .first()
+        )
+
+    context = {
+        'track': track,
+        'latest_winner': latest_winner,
+    }
+
+    return render(request, 'races/tracks/track-details.html', context)
 
 # Races
 
@@ -140,4 +164,14 @@ def result_delete(request: HttpRequest, pk: int) -> HttpResponse:
 # Standings
 
 def standings(request: HttpRequest) -> HttpResponse:
-    return render(request, 'races/results/standings.html')
+    drivers = Driver.objects.all().order_by('-total_points', 'name')
+    teams = Team.objects.annotate(
+        points=Sum('drivers__total_points', default=0)
+    ).order_by('-points', 'name')
+
+    context = {
+        'drivers': drivers,
+        'teams': teams,
+    }
+
+    return render(request, 'races/results/standings.html', context)
