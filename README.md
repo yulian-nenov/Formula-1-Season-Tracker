@@ -100,7 +100,7 @@ python manage.py migrate
 ```sh
 python manage.py load_sample_data
 ```
-This will load 3 teams with car models, 3 drivers, 3 tracks, 2 race,s and 2 race results
+This will load 3 teams with car models, 3 drivers, 3 tracks, 2 races and 2 race results
 
 ### 7. Create Superuser (Admin Access)
 
