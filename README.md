@@ -4,7 +4,7 @@
 ## Project Overview
 
 ---
-The Formula Driver Tracker is a Django-based web application designed to manage and track various aspects of a Formula racing season. This application allows users to keep records of drivers, teams, races, and their respective results, providing a comprehensive overview of the racing season.
+The Formula 1 Season Tracker is a Django-based web application designed to manage and track various aspects of a Formula racing season. This application allows users to keep records of drivers, teams, races, and their respective results, providing a comprehensive overview of the racing season.
 
 ## Application Preview
 
@@ -57,7 +57,7 @@ cd <project-directory>
 ```
 ### 2. Edit Environment Details
 
-- Copy the `env.template` fille
+- Copy the `env.template` file
     ````sh
     cp .env.template .env
     ````
@@ -100,7 +100,7 @@ python manage.py migrate
 ```sh
 python manage.py load_sample_data
 ```
-This will load 3 teams with car models, 3 drivers, 3 tracks, 2 races and 2 race results
+This will load 3 teams with car models, 3 drivers, 3 tracks, 2 race,s and 2 race results
 
 ### 7. Create Superuser (Admin Access)
 
@@ -222,7 +222,7 @@ Represents a Formula 1 circuit.
 | `name`      | CharField    | Circuit Name               |
 | `country`   | CharField    | Host country               |
 | `image_url` | URLField     | Track layout image         |
-| `Length_km` | DecimalField | Track length in kilometers |
+| `length_km` | DecimalField | Track length in kilometers |
 
 **IMPORTANT:** Tracks can only be created/edited/deleted through the Track Admin.
 
@@ -230,39 +230,39 @@ Represents a Formula 1 circuit.
 ### Race Model
 Represents a Grand Prix event.
 
-| Field Name     | Type                                       | Description           |
-|:---------------|:-------------------------------------------|:----------------------|
-| `name`         | CharField                                  | Race name             |
-| `round_number` | PositiveIntegerField                       | Championship round    |
-| `weather`      | CharField                                  | Weather conditions    |
-| `laps`         | PositiveIntegerField                       | Total laps            |
-| `date`         | DateTimeField                              | Race date and time    |
-| `track`        | ForeignKey -> Track                        | Hosting circuit       |
-| `drivers`      | ManyToManyField -> Driver (through Result) | Drivers participating |
+| Field Name     | Type                                           | Description           |
+|:---------------|:-----------------------------------------------|:----------------------|
+| `name`         | CharField                                      | Race name             |
+| `round_number` | PositiveIntegerField                           | Championship round    |
+| `weather`      | CharField                                      | Weather conditions    |
+| `laps`         | PositiveIntegerField                           | Total laps            |
+| `date`         | DateTimeField                                  | Race date and time    |
+| `track`        | ForeignKey -> Track                            | Hosting circuit       |
+| `drivers`      | ManyToManyField -> Driver (through RaceResult) | Drivers participating |
 
 ---
-### Result Model
+### RaceResult Model
 Stores contextual race performance data.
 
 | Field Name            | Type                 | Description                                 |
 |:----------------------|:---------------------|:--------------------------------------------|
 | `qualifying_position` | PositiveIntegerField | Grid position                               |
-| `qualifying_position` | PositiveIntegerField | Final position                              |
+| `finishing_position`  | PositiveIntegerField | Final position                              |
 | `points_awarded`      | PositiveIntegerField | Points earned                               |
 | `fastest_lap`         | BooleanField         | Fastest lap indicator                       |
 | `status`              | CharField            | Race status for driver (Finished, DNF, etc) |
 | `driver`              | ForeignKey -> Driver | Associated driver                           |
 | `race`                | ForeignKey -> Race   | Associated race                             |
 
-`@property` display_finishing_position -> if status is not `Finished`,
-it returns the status instead of the finishing position
+`@property` display_finishing_position -> Returns the race status if it is not `Finished`, otherwise,
+returns the finishing position.
 
 ## Mixins
 
 ---
 ### `ReadOnlyFormFieldsMixin`
-- Turns a form's fields into read only by inheriting the mixin
-- Used as delete conformation for forms which delete database records
+- Turns a form's fields into read-only by inheriting the mixin
+- Used as delete confirmation for forms which delete database records
 
 Usage examples:
 
@@ -279,7 +279,7 @@ class RaceDeleteForm(ReadOnlyFormFieldsMixin, RaceFormBase):
 
 The following constraints are enforced:
 - A driver can only have one result per race
-- Finishing and qualifying positions must be unique within a race
+- Finishing and qualifying positions must be unique per race
 - Only one fastest lap is allowed per race
 - A team can have a maximum of 2 drivers
 
@@ -294,7 +294,7 @@ Overriding some models' `save()`, `delete()` and `clean()` methods
 Example:
 
 The Driver model has a method `recalculate_driver_stats`, which
-recalculates a drivers `total_points`, `wins`, `dnfs` and `podiums`.
+recalculates a driver's `total_points`, `wins`, `dnfs` and `podiums`.
 
 ````py
 def recalculate_driver_stats(self) -> None:
@@ -334,7 +334,7 @@ driver.results.select_related("race").order_by("-race__date")[:3]
 ````
 To avoid having too many templates:
 - Template inheritance to avoid repetitive HTML
-- For each model the forms to create/edit/delete are merged into one single form template
+- For each model, the forms used to create, edit, and delete records are merged into a single template.
 - Reusing templates in views
 
 ## Security
@@ -359,6 +359,4 @@ Security is handled through:
 ## Licensing
 
 ---
-This project is licenced under the `MIT License`.
-
-All rights reserved.
+This project is licensed under the `MIT License`.
