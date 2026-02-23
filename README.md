@@ -333,6 +333,7 @@ Example:
 driver.results.select_related("race").order_by("-race__date")[:3]
 ````
 To avoid having too many templates:
+- Template inheritance to avoid repetitive HTML
 - For each model the forms to create/edit/delete are merged into one single form template
 - Reusing templates in views
 
@@ -353,3 +354,11 @@ Security is handled through:
 - Custom 404 page implemented
   - Note that the custom 404 page will not show if `DEBUG=True`
 - User-friendly validation messages
+
+
+## Licensing
+
+---
+This project is licenced under the `MIT License`.
+
+All rights reserved.
