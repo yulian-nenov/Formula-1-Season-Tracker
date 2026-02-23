@@ -17,11 +17,13 @@ def driver_list(request: HttpRequest) -> HttpResponse:
 
 def driver_details(request: HttpRequest, pk: int) -> HttpResponse:
     driver = Driver.objects.get(pk=pk)
-    recent_results = Result.objects.filter(driver=driver).order_by('-id')[:3]
+    recent_results = Result.objects.filter(driver=driver).order_by('-race__date')[:3]
+    races_participated = driver.races.count()
 
     context = {
         'driver': driver,
         'recent_results': recent_results,
+        'races_participated': races_participated,
     }
 
     return render(request, 'drivers/detail.html', context)

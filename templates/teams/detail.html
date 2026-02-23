@@ -65,7 +65,9 @@
                     <p>Round {{ race.round_number }} · {{ race.track.name }} Circuit</p>
                     <div class="driver-positions">
                         {% for result in race.results.all %}
+                            {% if result.driver.team == team %}
                                 <p><strong>{{ result.driver.name }}:</strong> {{ result.display_finishing_position }}</p>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -82,6 +84,7 @@
         <div class="feature-card team-stats">
             <h2>Team Statistics</h2>
             <p><strong>Team Points:</strong> {{ team.points }}</p>
+            <p><strong>Races Participated:</strong> {{ team.races }}</p>
             <p><strong>Total Wins:</strong> {{ team.wins }}</p>
             <p><strong>Total Podiums:</strong> {{ team.podiums }}</p>
             <p><strong>Total DNFs:</strong> {{ team.dnfs }} </p>

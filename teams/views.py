@@ -23,6 +23,7 @@ def team_list(request: HttpRequest) -> HttpResponse:
 def team_details(request: HttpRequest, pk: int) -> HttpResponse:
     team = Team.objects.annotate(
         points=Sum('drivers__total_points', default=0),
+        races=Sum('drivers__races', default=0),
         wins=Sum('drivers__wins', default=0),
         dnfs=Sum('drivers__dnfs', default=0),
         podiums=Sum('drivers__podiums', default=0),
@@ -60,6 +61,7 @@ def team_create(request: HttpRequest) -> HttpResponse:
     context = {
         "team_form": team_form,
         "car_form": car_form,
+        "page_title": "Create Team"
     }
 
     return render(request, "teams/team-form.html", context)

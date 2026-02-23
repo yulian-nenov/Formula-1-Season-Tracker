@@ -9,8 +9,8 @@
             <h1>F1 SEASON <br> TRACKER</h1>
             <p>Create and manage your very own <br> formula 1 season.</p>
             <div class="hero-buttons">
-                <a href="#" class="btn primary">Get Started</a>
-                <a href="#" class="btn secondary">View Calendar</a>
+                <a href="{% url 'teams:create' %}" class="btn primary">Get Started</a>
+                <a href="{% url 'races:race_list' %}" class="btn secondary">View Calendar</a>
             </div>
         </div>
     </div>
@@ -41,8 +41,9 @@
 
 <section class="latest-results container">
     <h2>Latest Race Results</h2>
-
     <div class="results-card">
+        {% if latest_race %}
+
         <h3>{{ latest_race.name }}</h3>
         <p>Round {{ latest_race.round_number }} · {{ latest_race.track.name }} Circuit</p>
 
@@ -60,8 +61,10 @@
                 </li>
             {% endfor %}
         </ul>
-
         <a href="{% url 'races:race_details' latest_race.pk %}" class="btn small">View Full Results</a>
+        {% else %}
+            <p>No races yet</p>
+        {% endif %}
     </div>
 </section>
 

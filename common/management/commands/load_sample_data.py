@@ -48,6 +48,14 @@ class Command(BaseCommand):
         )
 
         CarModel.objects.create(
+            name="SF25",
+            year=2025,
+            power_unit="Ferrari",
+            in_use=True,
+            team=ferrari
+        )
+
+        CarModel.objects.create(
             name="MERCEDES",
             year=2025,
             power_unit="MC",
@@ -81,6 +89,7 @@ class Command(BaseCommand):
         verstappen = Driver.objects.create(
             name="Max Verstappen",
             nationality="NL",
+            number=1,
             age=28,
             rookie_status=False,
             image="https://sportrenders.com/wp-content/uploads/2023/10/Verstappen-Red-bull-Render-PNG-Formula-1-Sport-Renders-Images.png",
@@ -94,6 +103,7 @@ class Command(BaseCommand):
         leclerc = Driver.objects.create(
             name="Charles Leclerc",
             nationality="MC",
+            number=16,
             age=28,
             rookie_status=False,
             image="https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000000/common/f1/2025/ferrari/chalec01/2025ferrarichalec01right.webp",
@@ -107,13 +117,14 @@ class Command(BaseCommand):
         tsunoda = Driver.objects.create(
             name="Yuki Tsunoda",
             nationality="JP",
+            number=22,
             age=25,
             rookie_status=True,
             image="https://www.kymillman.com/wp-content/uploads/f1/pages/driver-profiles/yuki-tsunoda/yuki-tsunoda-hero-driver.png",
             team=redbull,
             wins=0,
             total_points=0,
-            podiums=1,
+            podiums=0,
             dnfs=0
         )
 

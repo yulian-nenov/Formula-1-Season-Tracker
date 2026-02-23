@@ -37,7 +37,6 @@ class ResultFormBase(forms.ModelForm):
             raise ValidationError(f'If status is "Finished", finishing position cannot be null ')
 
 # Race forms
-
 class RaceCreateForm(RaceFormBase):
     pass
 

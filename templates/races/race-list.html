@@ -8,6 +8,7 @@
             <a href="{% url 'races:race_create' %}" class="btn primary">+ Add Race</a>
         </section>
 
+
         <div class="feature-card race-results">
             {% for race in races_with_results %}
                 <div class="result-item team-content" style="gap: 5em">
@@ -34,10 +35,13 @@
                                         — {{ result.points_awarded }} pts
                                     </p>
                                 </li>
+
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
+            {% empty %}
+                <h2>No races available yet.</h2>
             {% endfor %}
         </div>
     </div>

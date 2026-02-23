@@ -38,7 +38,6 @@
     <div class="team-content">
         <div class="feature-card race-results">
             <h2>Recent Results</h2>
-
             {% for result in recent_results %}
                 <div class="result-item">
                     <h3>{{ result.race.name }}</h3>
@@ -53,6 +52,7 @@
         <div class="feature-card team-stats">
             <h2>Driver Statistics</h2>
             <p><strong>Total Points:</strong> {{ driver.total_points }}</p>
+            <p><strong>Races Participated:</strong> {{ races_participated }}</p>
             <p><strong>Wins:</strong> {{ driver.wins }}</p>
             <p><strong>Podiums:</strong> {{ driver.podiums }}</p>
             <p><strong>DNFs:</strong> {{ driver.dnfs }} </p>

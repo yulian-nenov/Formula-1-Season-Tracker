@@ -40,7 +40,7 @@ def track_details(request: HttpRequest, pk: int) -> HttpResponse:
 # Races
 
 def race_list(request: HttpRequest) -> HttpResponse:
-    races_with_results = Race.objects.prefetch_related('results')
+    races_with_results = Race.objects.prefetch_related('results').order_by('-date')
 
     context = {
         'races_with_results': races_with_results
