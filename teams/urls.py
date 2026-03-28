@@ -1,15 +1,16 @@
 from django.urls import path, include
 
-from teams.views import team_list, team_details, team_edit, team_create, team_delete
+from teams.views import team_edit
+from teams import views
 
 app_name='teams'
 
 urlpatterns = [
-    path('', team_list, name='list'),
-    path('create/', team_create, name='create'),
+    path('', views.TeamListView.as_view(), name='list'),
+    path('create/', views.TeamCreateView.as_view(), name='create'),
     path('<int:pk>/', include([
-        path('', team_details, name='details'),
+        path('', views.TeamDetailsView.as_view(), name='details'),
         path('edit/', team_edit, name='edit'),
-        path('delete/', team_delete, name='delete'),
+        path('delete/', views.TeamDeleteView.as_view(), name='delete'),
     ]))
 ]
