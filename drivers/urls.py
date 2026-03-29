@@ -1,15 +1,15 @@
 from django.urls import path, include
 
-from drivers.views import driver_list, driver_create, driver_details, driver_edit, driver_delete
+from drivers import views
 
 app_name = 'drivers'
 
 urlpatterns = [
-    path('', driver_list, name='list'),
-    path('create/', driver_create, name='create'),
+    path('', views.DriverListView.as_view(), name='list'),
+    path('create/', views.DriverCreateView.as_view(), name='create'),
     path('<int:pk>/', include([
-        path('', driver_details, name='details'),
-        path('edit/', driver_edit, name='edit'),
-        path('delete/', driver_delete, name='delete'),
+        path('', views.DriverDetailsView.as_view(), name='details'),
+        path('edit/', views.DriverUpdateView.as_view(), name='edit'),
+        path('delete/', views.DriverDeleteView.as_view(), name='delete'),
     ]))
 ]

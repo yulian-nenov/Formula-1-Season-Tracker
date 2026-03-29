@@ -15,11 +15,7 @@ from teams.models import Team, CarModel
 class TeamListView(ListView):
     model = Team
     context_object_name = 'teams'
-
-    def get_queryset(self) -> QuerySet:
-        return Team.objects.annotate(
-            wins=Sum('drivers__wins', default=0),
-        )
+    queryset = Team.objects.annotate(wins=Sum('drivers__wins', default=0),)
 
 class TeamDetailsView(DetailView):
     model = Team

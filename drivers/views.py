@@ -1,74 +1,66 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from drivers.forms import DriverCreateForm, DriverEditForm, DriverDeleteForm
 from drivers.models import Driver
 from races.models import Result
 
+class DriverListView(ListView):
+    model = Driver
+    context_object_name = 'drivers'
+    queryset = Driver.objects.all()
 
-def driver_list(request: HttpRequest) -> HttpResponse:
-    drivers = Driver.objects.all()
+class DriverDetailsView(DetailView):
+    model = Driver
+    context_object_name = 'driver'
 
-    context = {
-        'drivers': drivers,
-    }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    return render(request, 'drivers/list.html', context)
+        driver = self.object
+        recent_results = Result.objects.filter(driver=driver).order_by('-race__date')[:3]
+        races_participated = driver.races.count()
 
-def driver_details(request: HttpRequest, pk: int) -> HttpResponse:
-    driver = Driver.objects.get(pk=pk)
-    recent_results = Result.objects.filter(driver=driver).order_by('-race__date')[:3]
-    races_participated = driver.races.count()
+        context['recent_results'] = recent_results
+        context['races_participated'] = races_participated
 
-    context = {
-        'driver': driver,
-        'recent_results': recent_results,
-        'races_participated': races_participated,
-    }
+        return context
 
-    return render(request, 'drivers/detail.html', context)
+class DriverCreateView(CreateView):
+    model = Driver
+    form_class = DriverCreateForm
+    template_name = 'drivers/driver-form.html'
+    success_url = reverse_lazy('drivers:list')
 
-def driver_create(request: HttpRequest) -> HttpResponse:
-    form = DriverCreateForm(request.POST or None, request.FILES or None)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Create Driver'
+        return context
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
+class DriverUpdateView(UpdateView):
+    model = Driver
+    form_class = DriverEditForm
+    template_name = 'drivers/driver-form.html'
+    context_object_name = 'driver'
 
-        return redirect('drivers:list')
+    def get_success_url(self):
+        return reverse_lazy('drivers:list', kwargs={'pk': self.object.pk})
 
-    context = {
-        'form': form,
-        'page_title': 'Create Driver',
-    }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Edit Driver'
+        return context
 
-    return render(request, 'drivers/driver-form.html', context)
+class DriverDeleteView(DeleteView):
+    model = Driver
+    context_object_name = 'driver'
+    form_class = DriverDeleteForm
+    template_name = 'drivers/driver-form.html'
+    success_url = reverse_lazy('drivers:list')
 
-def driver_edit(request: HttpRequest, pk: int) -> HttpResponse:
-    driver = Driver.objects.get(pk=pk)
-    form = DriverEditForm(request.POST or None, request.FILES or None, instance=driver)
-
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('drivers:details', driver.pk)
-
-    context = {
-        'form': form,
-        'page_title': 'Edit Driver',
-    }
-
-    return render(request, 'drivers/driver-form.html', context)
-
-def driver_delete(request: HttpRequest, pk: int) -> HttpResponse:
-    driver = Driver.objects.get(pk=pk)
-    form = DriverDeleteForm(request.POST or None, request.FILES or None, instance=driver)
-
-    if request.method == 'POST' and form.is_valid():
-        driver.delete()
-        return redirect('drivers:list')
-
-    context = {
-        'form': form,
-        'page_title': 'Delete Driver',
-    }
-
-    return render(request, 'drivers/driver-form.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Delete Driver'
+        return context
