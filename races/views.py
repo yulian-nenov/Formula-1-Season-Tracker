@@ -4,38 +4,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from drivers.models import Driver
 from races.forms import RaceCreateForm, RaceEditForm, RaceDeleteForm, ResultCreateForm, ResultEditForm, ResultDeleteForm
-from races.models import Race, Result, Track
+from races.models import Race, Result
 from teams.models import Team
-
-
-# Tracks
-
-def track_list(request: HttpRequest) -> HttpResponse:
-    tracks = Track.objects.all()
-
-    context = {
-        'tracks': tracks
-    }
-
-    return render(request, 'races/tracks/track-list.html', context)
-
-def track_details(request: HttpRequest, pk: int) -> HttpResponse:
-    track = Track.objects.prefetch_related('race_track').get(pk=pk)
-    latest_winner = (
-        Result.objects
-        .filter(
-            race__track=track,
-            finishing_position=1
-        ).order_by('-race__date')
-        .first()
-        )
-
-    context = {
-        'track': track,
-        'latest_winner': latest_winner,
-    }
-
-    return render(request, 'races/tracks/track-details.html', context)
 
 # Races
 

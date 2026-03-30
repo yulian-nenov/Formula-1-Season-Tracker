@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from races.models import Track
+from tracks.models import Track
 
 
 @admin.register(Track)

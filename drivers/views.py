@@ -46,7 +46,7 @@ class DriverUpdateView(UpdateView):
     context_object_name = 'driver'
 
     def get_success_url(self):
-        return reverse_lazy('drivers:list', kwargs={'pk': self.object.pk})
+        return reverse_lazy('drivers:details', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,11 +56,11 @@ class DriverUpdateView(UpdateView):
 class DriverDeleteView(DeleteView):
     model = Driver
     context_object_name = 'driver'
-    form_class = DriverDeleteForm
     template_name = 'drivers/driver-form.html'
     success_url = reverse_lazy('drivers:list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = DriverDeleteForm(instance=self.object)
         context['page_title'] = 'Delete Driver'
         return context

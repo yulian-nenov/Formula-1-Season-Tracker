@@ -5,7 +5,7 @@
 
 <section class="container track-details">
 
-    <a href="{% url 'races:track_list' %}" class="back-link">← Back to Tracks</a>
+    <a href="{% url 'tracks:list' %}" class="back-link">← Back to Tracks</a>
 
     <div class="feature-card header-card">
         <div class="header-right">
@@ -27,6 +27,10 @@
                 {% else %}
                     No winners on this track yet.
                 {% endif %}</p>
+            <div class="actions-bottom">
+                    <a href="{% url 'tracks:edit' track.pk %}" class="card-btn ">Edit Track</a>
+                    <a href="{% url 'tracks:delete' track.pk %}" class="card-btn dark-btn">Delete Track</a>
+            </div>
         </div>
     </div>
 

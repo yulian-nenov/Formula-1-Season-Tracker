@@ -1,10 +1,11 @@
 from django.core.management.base import BaseCommand
 from teams.models import Team, CarModel
-from races.models import Track
 from drivers.models import Driver
 from races.models import Race, Result
 from django.utils.timezone import make_aware
 from datetime import datetime
+
+from tracks.models import Track
 
 
 class Command(BaseCommand):

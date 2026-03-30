@@ -39,6 +39,7 @@ PROJECT_APPS = [
     'drivers',
     'teams',
     'races',
+    'tracks',
 ]
 
 INSTALLED_APPS = [

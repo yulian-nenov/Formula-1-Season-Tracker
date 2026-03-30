@@ -58,9 +58,6 @@ class Driver(models.Model):
         'teams.Team',
         on_delete=models.CASCADE,
         related_name='drivers',
-        validators=[
-            AvailableSlotValidator(max_value=2, message='A team can have a maximum of 2 drivers!'),
-        ]
     )
 
     image = models.URLField()

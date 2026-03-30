@@ -1,14 +1,11 @@
 from django.urls import path, include
 
-from races.views import track_list, track_details, race_list, race_details, race_create, race_edit, race_delete, \
+from races.views import race_list, race_details, race_create, race_edit, race_delete, \
     result_add, result_edit, result_delete, standings
 
 app_name = 'races'
 
-track_urls = [
-    path('', track_list, name='track_list'),
-    path('<int:pk>/', track_details, name='track_details'),
-]
+
 
 races_urls = [
     path('', race_list, name='race_list'),
@@ -29,7 +26,6 @@ results_urls = [
 ]
 
 urlpatterns = [
-    path('tracks/', include(track_urls)),
     path('races/', include(races_urls)),
     path('results/', include(results_urls)),
     path('standings/', standings, name='standings'),

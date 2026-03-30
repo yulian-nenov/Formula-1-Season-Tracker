@@ -1,6 +1,9 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from common.mixins import ReadOnlyFormFieldsMixin
 from drivers.models import Driver
+from drivers.validators import AvailableSlotValidator
 
 
 class DriverFormBase(forms.ModelForm):
@@ -13,6 +16,21 @@ class DriverFormBase(forms.ModelForm):
             'image': forms.URLInput(attrs={'placeholder': 'Enter image URL'}),
             'rookie_status': forms.RadioSelect(choices=[(True, 'Yes'), (False, 'No')])
         }
+
+    def clean_team(self):
+        team = self.cleaned_data.get("team")
+        if not team:
+            return team
+
+        drivers = team.drivers.all()
+
+        if self.instance.pk:
+            drivers = drivers.exclude(pk=self.instance.pk)
+
+        if drivers.count() >= 2:
+            raise ValidationError("A team can have a maximum of 2 drivers!")
+
+        return team
 
 class DriverCreateForm(DriverFormBase):
     pass

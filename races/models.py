@@ -6,31 +6,6 @@ from common.models import BaseTimeStamp
 from races.choices import WeatherChoices, StatusChoices
 
 
-class Track(models.Model):
-    name = models.CharField(
-        max_length=100,
-    )
-
-    country = models.CharField(
-        max_length=100,
-    )
-
-    image_url = models.URLField(
-        null=True,
-        blank=True,
-    )
-
-    length_km = models.DecimalField(
-        max_digits=3,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(1),
-        ]
-    )
-
-    def __str__(self):
-        return self.name
-
 class Race(BaseTimeStamp):
     name = models.CharField(
         max_length=100,
@@ -49,7 +24,7 @@ class Race(BaseTimeStamp):
     )
 
     track = models.ForeignKey(
-        "Track",
+        "tracks.Track",
         on_delete=models.CASCADE,
         related_name="race_track",
     )
