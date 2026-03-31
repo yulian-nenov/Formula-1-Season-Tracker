@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="container team-detail">
+
+    <a href="{% url 'teams:list' %}" class="back-link">← Back to Teams</a>
+
+    <!-- TEAM HEADER -->
+    <div class="feature-card header-card">
+        <div class="team-header-left">
+            <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
+        </div>
+
+        <div class="header-right">
+            <h1>{{ user.username }}</h1>
+            <p><strong>Joined:</strong> {{ user.date_joined }}</p>
+            <p><strong>Favorite Tracks</strong> {{ user.profile.favorite_tracks.all }}</p>
+
+{#            <div class="actions-bottom">#}
+{#                    <a href="{% url 'teams:edit' team.pk %}" class="card-btn ">Edit Team</a>#}
+{#                    <a href="{% url 'teams:delete' team.pk %}" class="card-btn dark-btn">Delete Team</a>#}
+{##}
+{#                    <div class="created-edited">#}
+{#                        <p>Created: {{ team.created_at }}</p>#}
+{#                        <p>Edited: {{ team.updated_at }}</p>#}
+{#                    </div>#}
+{#            </div>#}
+
+
+        </div>
+    </div>
+
+    <div class="team-content">
+
+        <div class="feature-card team-drivers" id="track-card-profile">
+            <h2>Favorite Tracks</h2>
+
+            <div class="tracks-wrapper">
+                {% for track in user.profile.favorite_tracks.all %}
+                    <div class="driver-card">
+                        <img src="{{ track.image_url }}" alt="Track image">
+                        <a href="{% url 'tracks:details' track.pk %}"><h3>{{ track.name }}</h3></a>
+                    </div>
+                {% empty %}
+                    <p>No favorite tracks yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="feature-card race-results">
+            <h2>Information</h2>
+
+            {% for race in recent_races %}
+                <div class="result-item">
+                    <h3>{{ race.name }}</h3>
+                    <p>Round {{ race.round_number }} · {{ race.track.name }} Circuit</p>
+                    <div class="driver-positions">
+                        {% for result in race.results.all %}
+                            {% if result.driver.team == team %}
+                                <p><strong>{{ result.driver.name }}:</strong> {{ result.display_finishing_position }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No results yet.</p>
+            {% endfor %}
+
+            <a href="{% url 'races:race_list' %}" class="btn primary small">View All Results</a>
+
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

@@ -16,7 +16,15 @@
 .nav-links {
     list-style: none;
     display: flex;
+    align-items: center;
     gap: 20px;
+}
+
+.profile-picture {
+    height: 35px;
+    width: auto;
+    border-radius: 1em;
+    border: 1px solid black;
 }
 
 .nav-links a {

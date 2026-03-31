@@ -61,7 +61,10 @@
                 </li>
             {% endfor %}
         </ul>
-        <a href="{% url 'races:race_details' latest_race.pk %}" class="btn small">View Full Results</a>
+            <form action="{% url 'accounts:logout' %}" method="post">
+                {% csrf_token %}
+                <button class="btn primary">Logout</button>
+            </form>
         {% else %}
             <p>No races yet</p>
         {% endif %}

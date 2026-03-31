@@ -1,6 +1,9 @@
 from django.db.models import Sum
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from drivers.models import Driver
 from races.forms import RaceCreateForm, RaceEditForm, RaceDeleteForm, ResultCreateForm, ResultEditForm, ResultDeleteForm
@@ -9,139 +12,113 @@ from teams.models import Team
 
 # Races
 
-def race_list(request: HttpRequest) -> HttpResponse:
-    races_with_results = Race.objects.prefetch_related('results').order_by('-date')
+class RaceListView(ListView):
+    model = Race
+    queryset = Race.objects.prefetch_related('results').order_by('-date')
+    context_object_name = 'races_with_results'
 
-    context = {
-        'races_with_results': races_with_results
-    }
+class RaceDetailView(DetailView):
+    model = Race
+    context_object_name = 'race'
 
+class RaceCreateView(CreateView):
+    model = Race
+    form_class = RaceCreateForm
+    template_name = 'races/race-form.html'
+    success_url = reverse_lazy('races:race_list')
 
-    return render(request, 'races/race-list.html', context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Create Race'
+        context['model'] = 'Race'
+        return context
 
-def race_details(request: HttpRequest, pk: int) -> HttpResponse:
-    race = get_object_or_404(
-        Race.objects.prefetch_related('results'),
-        pk=pk
-    )
+class RaceUpdateView(UpdateView):
+    model = Race
+    form_class = RaceEditForm
+    template_name = 'races/race-form.html'
 
-    context = {
-        'race': race
-    }
+    def get_success_url(self):
+        return reverse_lazy('races:race_details', kwargs={'pk': self.object.pk})
 
-    return render(request, 'races/race-details.html', context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Update Race'
+        context['model'] = 'Race'
+        return context
 
-def race_create(request: HttpRequest) -> HttpResponse:
-    form = RaceCreateForm(request.POST or None, request.FILES or None)
+class RaceDeleteView(DeleteView):
+    model = Race
+    template_name = 'races/race-form.html'
+    success_url = reverse_lazy('races:race_list')
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-        return redirect('races:race_list')
+        context['form'] = RaceDeleteForm(instance=self.object)
+        context['page_title'] = 'Delete Race'
+        context['model'] = 'Race'
 
-    context = {
-        'form': form,
-        'page_title': 'Create Race',
-        'model': 'Race',
-    }
-
-    return render( request, 'races/race-form.html', context)
-
-def race_edit(request: HttpRequest, pk: int) -> HttpResponse:
-    race = Race.objects.get(pk=pk)
-    form = RaceEditForm(request.POST or None, request.FILES or None, instance=race)
-
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('races:race_details', pk=pk)
-
-    context = {
-        'form': form,
-        'page_title': 'Edit Race',
-        'model': 'Race',
-    }
-
-    return render(request, 'races/race-form.html', context)
-
-def race_delete(request: HttpRequest, pk: int) -> HttpResponse:
-    race = Race.objects.get(pk=pk)
-    form = RaceDeleteForm(request.POST or None, request.FILES or None, instance=race)
-
-    if request.method == 'POST' and form.is_valid():
-        race.delete()
-
-        return redirect('races:race_list')
-
-    context = {
-        'form': form,
-        'page_title': 'Delete Race',
-        'model': 'Race',
-    }
-
-    return render(request, 'races/race-form.html', context)
+        return context
 
 # Results
 
-def result_add(request: HttpRequest) -> HttpResponse:
-    form = ResultCreateForm(request.POST or None, request.FILES or None)
+class ResultCreateView(CreateView):
+    model = Result
+    form_class = ResultCreateForm
+    template_name = 'races/race-form.html'
+    success_url = reverse_lazy('races:race_list')
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('races:race_list')
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Create Result'
+        context['model'] = 'Result'
+        return context
 
-    context = {
-        'form': form,
-        'page_title': 'Add Result',
-        'model': 'Result',
-    }
+class ResultUpdateView(UpdateView):
+    model = Result
+    form_class = ResultEditForm
+    template_name = 'races/race-form.html'
 
-    return render(request, 'races/race-form.html', context)
+    def get_success_url(self):
+        return reverse_lazy('races:race_details', kwargs={'pk': self.object.race.pk})
 
-def result_edit(request: HttpRequest, pk: int) -> HttpResponse:
-    result = Result.objects.get(pk=pk)
-    form = ResultEditForm(request.POST or None, request.FILES or None, instance=result)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Create Result'
+        context['model'] = 'Result'
+        return context
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
+class ResultDeleteView(DeleteView):
+    model = Result
+    template_name = 'races/race-form.html'
 
-        return redirect('races:race_details', result.race.pk)
+    def get_success_url(self):
+        return reverse_lazy('races:race_details', kwargs={'pk': self.object.race.pk})
 
-    context = {
-        'form': form,
-        'page_title': 'Edit Result',
-        'model': 'Result',
-    }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    return render(request, 'races/race-form.html', context)
+        context['form'] = ResultDeleteForm(instance=self.object)
+        context['page_title'] = 'Delete Result'
+        context['model'] = 'Result'
 
-def result_delete(request: HttpRequest, pk: int) -> HttpResponse:
-    result = Result.objects.get(pk=pk)
-    form = ResultDeleteForm(request.POST or None, request.FILES or None, instance=result)
-
-    if request.method == 'POST' and form.is_valid():
-        result.delete()
-
-        return redirect('races:race_list')
-
-    context = {
-        'form': form,
-        'page_title': 'Delete Result',
-        'model': 'Result',
-    }
-
-    return render(request, 'races/race-form.html', context)
+        return context
 
 # Standings
 
-def standings(request: HttpRequest) -> HttpResponse:
-    drivers = Driver.objects.all().order_by('-total_points', 'name')
-    teams = Team.objects.annotate(
-        points=Sum('drivers__total_points', default=0)
-    ).order_by('-points', 'name')
+class StandingsView(View):
+    template_name = 'races/results/standings.html'
 
-    context = {
-        'drivers': drivers,
-        'teams': teams,
-    }
+    def get(self, request: HttpRequest) -> HttpResponse:
+        drivers = Driver.objects.all().order_by('-total_points', 'name')
+        teams = Team.objects.annotate(
+            points=Sum('drivers__total_points', default=0)
+        ).order_by('-points', 'name')
 
-    return render(request, 'races/results/standings.html', context)
+        context = {
+            'drivers': drivers,
+            'teams': teams,
+        }
+
+        return render(request, self.template_name, context)

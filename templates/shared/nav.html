@@ -14,6 +14,13 @@
                 <li><a href="{% url 'races:race_list' %}">Races</a></li>
                 <li><a href="{% url 'tracks:list' %}">Tracks</a></li>
                 <li><a href="{% url 'races:standings' %}" class="cta">Standings</a></li>
+                {% if user.is_authenticated %}
+                	<li>
+                        <a href="{% url 'accounts:detail' user.pk %}">
+                            <img class="profile-picture" src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
+                        </a>
+                    </li>
+                {% endif %} 
             </ul>
         </nav>
     </div>
