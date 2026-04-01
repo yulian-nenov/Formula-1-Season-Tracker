@@ -27,10 +27,12 @@
                 {% else %}
                     No winners on this track yet.
                 {% endif %}</p>
-            <div class="actions-bottom">
-                    <a href="{% url 'tracks:edit' track.pk %}" class="card-btn ">Edit Track</a>
-                    <a href="{% url 'tracks:delete' track.pk %}" class="card-btn dark-btn">Delete Track</a>
-            </div>
+            {% if perms.tracks.change_track and perms.tracks.delete_track or user.is_superuser %}
+                <div class="actions-bottom">
+                        <a href="{% url 'tracks:edit' track.pk %}" class="card-btn ">Edit Track</a>
+                        <a href="{% url 'tracks:delete' track.pk %}" class="card-btn dark-btn">Delete Track</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 

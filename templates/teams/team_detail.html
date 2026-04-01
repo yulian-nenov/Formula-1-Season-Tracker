@@ -22,10 +22,15 @@
             <p><img class="location-icon" src="{% static 'images/location-icon.png' %}" alt="Location icon"><strong>{{ team.base_country }}</strong></p>
             <p><strong>Principal:</strong> {{ team.principal }}</p>
             <p><strong>Engine Supplier:</strong> {{ team.engine_supplier }}</p>
+            {% if team.owner %}
+            	<p><strong>Owner: <a href="{% url 'accounts:detail' team.owner.pk %}" style="color: red">{{ team.owner.username }}</a></strong></p>
+            {% endif %}
 
             <div class="actions-bottom">
-                    <a href="{% url 'teams:edit' team.pk %}" class="card-btn ">Edit Team</a>
-                    <a href="{% url 'teams:delete' team.pk %}" class="card-btn dark-btn">Delete Team</a>
+                    {% if user.is_authenticated and user == team.owner and perms.teams.delete_team and perms.teams.change_team %}
+                        <a href="{% url 'teams:edit' team.pk %}" class="card-btn ">Edit Team</a>
+                        <a href="{% url 'teams:delete' team.pk %}" class="card-btn dark-btn">Delete Team</a>
+                    {% endif %}
 
                     <div class="created-edited">
                         <p>Created: {{ team.created_at }}</p>

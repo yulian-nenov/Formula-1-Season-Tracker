@@ -5,7 +5,9 @@
     <div class="container">
         <section class="page-header">
             <h1 class="page-title">Races</h1>
-            <a href="{% url 'races:race_create' %}" class="btn primary">+ Add Race</a>
+            {% if perms.races.add_race %}
+                <a href="{% url 'races:race_create' %}" class="btn primary">+ Add Race</a>
+            {% endif %}
         </section>
 
 

@@ -10,24 +10,23 @@
     <!-- TEAM HEADER -->
     <div class="feature-card header-card">
         <div class="team-header-left">
-            <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
+            <img class="profile-picture" src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}">
         </div>
 
         <div class="header-right">
-            <h1>{{ user.username }}</h1>
-            <p><strong>Joined:</strong> {{ user.date_joined }}</p>
-            <p><strong>Favorite Tracks</strong> {{ user.profile.favorite_tracks.all }}</p>
-
-{#            <div class="actions-bottom">#}
-{#                    <a href="{% url 'teams:edit' team.pk %}" class="card-btn ">Edit Team</a>#}
-{#                    <a href="{% url 'teams:delete' team.pk %}" class="card-btn dark-btn">Delete Team</a>#}
-{##}
-{#                    <div class="created-edited">#}
-{#                        <p>Created: {{ team.created_at }}</p>#}
-{#                        <p>Edited: {{ team.updated_at }}</p>#}
-{#                    </div>#}
-{#            </div>#}
-
+            <h1>{{ profile.user.username }}</h1>
+            <p><strong>Joined:</strong> {{ profile.user.date_joined }}</p>
+            {% if profile.user.is_active %}
+                <span class="status-badge status-badge--active">Account is active</span>
+            {% else %}
+                <span class="status-badge status-badge--inactive">Account is inactive</span>
+            {% endif %}
+            {% if request.user == object.user %}
+                <div class="actions-bottom">
+                        <a href="{% url 'accounts:edit' %}" class="card-btn ">Edit Account</a>
+                       <a href="{% url 'accounts:delete' %}" class="card-btn dark-btn">Delete Account</a>
+                </div>
+            {% endif %}
 
         </div>
     </div>
@@ -50,26 +49,22 @@
         </div>
 
         <div class="feature-card race-results">
-            <h2>Information</h2>
+            <h2>Owned Teams</h2>
 
-            {% for race in recent_races %}
+            {% for team in profile.user.owned_teams.all %}
                 <div class="result-item">
-                    <h3>{{ race.name }}</h3>
-                    <p>Round {{ race.round_number }} · {{ race.track.name }} Circuit</p>
-                    <div class="driver-positions">
-                        {% for result in race.results.all %}
-                            {% if result.driver.team == team %}
-                                <p><strong>{{ result.driver.name }}:</strong> {{ result.display_finishing_position }}</p>
-                            {% endif %}
+                    <h3>{{ team.name }}</h3>
+                    <p><strong>Principal:</strong> {{ team.principal }}</p>
+                    <p><strong>Drivers:</strong></p>
+{#                    <ul>#}
+                        {% for driver in team.drivers.all %}
+                            <p><strong>-> {{ driver.name }}</strong></p>
                         {% endfor %}
-                    </div>
+{#                    </ul>#}
                 </div>
             {% empty %}
-                <p>No results yet.</p>
+                <p>No teams yet.</p>
             {% endfor %}
-
-            <a href="{% url 'races:race_list' %}" class="btn primary small">View All Results</a>
-
         </div>
     </div>
 

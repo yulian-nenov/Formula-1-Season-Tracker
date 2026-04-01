@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <section class="container form-section">
+
+    <div class="feature-card form-card">
+    <h2 style="margin-bottom: 2em">Are you sure you want to delete your account?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn primary">Yes, delete my account</button>
+        <a href="{% url 'accounts:detail' request.user.pk %}" class="card-btn">Cancel</a>
+    </form>
+        </div>
+
+    </section>
+
+{% endblock %}

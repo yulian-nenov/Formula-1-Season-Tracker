@@ -9,7 +9,7 @@ from races.models import Race, Result
 class RaceFormBase(forms.ModelForm):
     class Meta:
         model = Race
-        exclude = ['created_at', 'updated_at', 'drivers']
+        exclude = ['created_at', 'updated_at', 'drivers', 'started_at', 'started_by']
         widgets = {
             "date": forms.DateTimeInput(attrs={
                 "type": "datetime-local",
@@ -17,10 +17,12 @@ class RaceFormBase(forms.ModelForm):
             })
         }
 
+
+
 class ResultFormBase(forms.ModelForm):
     class Meta:
         model = Result
-        fields = '__all__'
+        exclude = ['owner']
         widgets = {
             'fastest_lap': forms.RadioSelect(choices=[(True, 'Yes'), (False, 'No')]),
         }

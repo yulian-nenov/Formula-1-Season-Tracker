@@ -6,7 +6,7 @@ from teams.models import Team, CarModel
 class TeamFormBase(forms.ModelForm):
     class Meta:
         model = Team
-        exclude = ['created_at', 'updated_at']
+        exclude = ['created_at', 'updated_at', 'owner']
 
 class CarFormBase(forms.ModelForm):
     class Meta:

@@ -6,7 +6,9 @@
     <div class="container">
         <section class="page-header">
             <h1 class="page-title">F1 Drivers</h1>
-            <a href="{% url 'drivers:create' %}" class="btn primary">+ Add Driver</a>
+            {% if perms.drivers.add_driver or user.is_superuser %}
+                <a href="{% url 'drivers:create' %}" class="btn primary">+ Add Driver</a>
+            {% endif %}
         </section>
 
             <div class="wrapper">
@@ -24,7 +26,9 @@
                         <p><strong>Country:</strong> {{ driver.nationality }}</p>
                         <p><strong>Team:</strong> {{ driver.team.name }}</p>
                         <p><strong>Wins:</strong> {{ driver.wins }}</p>
-
+                        {% if driver.owner %}
+                            <p><strong>Owner:</strong> {{ driver.owner.username }}</p>
+                        {% endif %}
                         <div class="actions">
                             <a href="{% url 'drivers:details' driver.pk %}" class="card-btn ">Details</a>
                         </div>

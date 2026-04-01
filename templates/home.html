@@ -61,10 +61,6 @@
                 </li>
             {% endfor %}
         </ul>
-            <form action="{% url 'accounts:logout' %}" method="post">
-                {% csrf_token %}
-                <button class="btn primary">Logout</button>
-            </form>
         {% else %}
             <p>No races yet</p>
         {% endif %}

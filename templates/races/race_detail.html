@@ -16,10 +16,18 @@
                 <p><strong>Laps:</strong> {{ race.laps }}</p>
                 <p><strong>Weather:</strong> {{ race.weather }}</p>
                 <p><strong>Date:</strong> {{ race.date }}</p>
+                {% if race.started_by %}
+                    <p><strong>Initialized by: <a href="{% url 'accounts:detail' race.started_by.pk %}" style="color: red">{{ race.started_by.username }}</a></strong></p>
+
+                {% endif %}
+
 
                 <div class="actions-bottom">
-                        <a href="{% url 'races:race_edit' race.pk %}" class="card-btn ">Edit Race</a>
+                    {% if user.is_authenticated and user == race.started_by or user.is_superuser %}
+                    	<a href="{% url 'races:race_edit' race.pk %}" class="card-btn ">Edit Race</a>
                         <a href="{% url 'races:race_delete' race.pk %}" class="card-btn dark-btn">Delete Race</a>
+                    {% endif %}
+
 
                         <div class="created-edited">
                             <p>Created: {{ race.created_at }}</p>
@@ -71,10 +79,14 @@
                                 <td>{{ result.driver.nationality }}</td>
                                 <td>{{ result.qualifying_position }}</td>
                                 <td>
+                                    {% if user == result.owner %}
                                     <div class="actions-bottom">
                                         <a href="{% url 'races:result_edit' result.pk %}" class="btn ">Edit Result</a>
                                         <a href="{% url 'races:result_delete' result.pk %}" class="btn ">Delete Result</a>
                                     </div>
+                                    {% else %}
+                                        <p>Not Owner</p>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}

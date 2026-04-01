@@ -23,11 +23,11 @@
 .profile-picture {
     height: 35px;
     width: auto;
-    border-radius: 1em;
+    border-radius: 50%;
     border: 1px solid black;
 }
 
-.nav-links a {
+.nav-element {
     color: #fff;
     text-decoration: none;
 }
@@ -36,4 +36,11 @@
     background-color: #e10600;
     padding: 8px 14px;
     border-radius: 4px;
+}
+
+.nav-links .btn {
+    text-decoration: none;
+    color: black;
+    background: white;
+    padding: 8px 14px;
 }

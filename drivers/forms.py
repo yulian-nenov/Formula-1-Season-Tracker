@@ -3,13 +3,13 @@ from django.core.exceptions import ValidationError
 
 from common.mixins import ReadOnlyFormFieldsMixin
 from drivers.models import Driver
-from drivers.validators import AvailableSlotValidator
+from teams.models import Team
 
 
 class DriverFormBase(forms.ModelForm):
     class Meta:
         model = Driver
-        exclude = ['total_points', 'podiums', 'wins', 'dnfs', 'wins']
+        exclude = ['total_points', 'podiums', 'wins', 'dnfs', 'wins', 'owner']
 
         widgets = {
             'nationality': forms.TextInput(attrs={'placeholder': 'Enter 2 letter ISO code'}),
@@ -33,10 +33,16 @@ class DriverFormBase(forms.ModelForm):
         return team
 
 class DriverCreateForm(DriverFormBase):
-    pass
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+        self.fields['team'].queryset = Team.objects.filter(owner=user)
 
 class DriverEditForm(DriverFormBase):
-    pass
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+        self.fields['team'].queryset = Team.objects.filter(owner=user)
 
 class DriverDeleteForm(ReadOnlyFormFieldsMixin, DriverFormBase):
     pass

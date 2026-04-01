@@ -1,8 +1,8 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from common.mixins import OwnerOnlyMixin
 from drivers.forms import DriverCreateForm, DriverEditForm, DriverDeleteForm
 from drivers.models import Driver
 from races.models import Result
@@ -28,9 +28,11 @@ class DriverDetailsView(DetailView):
 
         return context
 
-class DriverCreateView(CreateView):
+
+class DriverCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Driver
     form_class = DriverCreateForm
+    permission_required = 'drivers.add_driver'
     template_name = 'drivers/driver-form.html'
     success_url = reverse_lazy('drivers:list')
 
@@ -39,9 +41,21 @@ class DriverCreateView(CreateView):
         context['page_title'] = 'Create Driver'
         return context
 
-class DriverUpdateView(UpdateView):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        driver = form.save(commit=False)
+        driver.owner = self.request.user
+        driver.save()
+        return super().form_valid(form)
+
+class DriverUpdateView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMixin, UpdateView):
     model = Driver
     form_class = DriverEditForm
+    permission_required = 'drivers.change_driver'
     template_name = 'drivers/driver-form.html'
     context_object_name = 'driver'
 
@@ -53,9 +67,15 @@ class DriverUpdateView(UpdateView):
         context['page_title'] = 'Edit Driver'
         return context
 
-class DriverDeleteView(DeleteView):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+class DriverDeleteView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMixin, DeleteView):
     model = Driver
     context_object_name = 'driver'
+    permission_required = 'drivers.delete_driver'
     template_name = 'drivers/driver-form.html'
     success_url = reverse_lazy('drivers:list')
 

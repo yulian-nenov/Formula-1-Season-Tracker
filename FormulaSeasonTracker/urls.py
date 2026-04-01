@@ -30,5 +30,7 @@ urlpatterns = [
     path('', include('races.urls')),
 ]
 
+handler403 = "common.views.custom_403"
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

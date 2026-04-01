@@ -25,6 +25,7 @@
                         <p><strong>Country:</strong> {{ team.base_country }}</p>
                         <p><strong>Team Principal:</strong> {{ team.principal }}</p>
                         <p><strong>Wins:</strong> {{ team.wins }}</p>
+                        <p><strong>Owner:</strong> {{ team.owner.username }}</p>
 
                         <div class="actions">
                             <a href="{% url 'teams:details' team.pk %}" class="card-btn ">Details</a>

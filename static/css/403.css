@@ -1,0 +1,42 @@
+/* 403 Error Page */
+
+.error-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.error-card {
+    text-align: center;
+    padding: 40px;
+    max-width: 500px;
+    border-radius: 12px;
+    background: #1e1e2f;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.error-code {
+    font-size: 80px;
+    font-weight: bold;
+    color: #ff4d4f;
+    margin-bottom: 10px;
+}
+
+.error-title {
+    color: white;
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.error-message {
+    font-size: 16px;
+    color: #bbb;
+    margin-bottom: 25px;
+}
+
+.error-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -33,9 +34,10 @@ class TrackDetailView(DetailView):
 
         return context
 
-class TrackCreateView(CreateView):
+class TrackCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Track
     form_class = TrackCreateForm
+    permission_required = 'tracks.add_track'
     template_name = 'tracks/track_form.html'
     success_url = reverse_lazy('tracks:list')
 
@@ -44,9 +46,10 @@ class TrackCreateView(CreateView):
         context['page_title'] = 'Create Track'
         return context
 
-class TrackUpdateView(UpdateView):
+class TrackUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Track
     form_class = TrackUpdateForm
+    permission_required = 'tracks.change_track'
     template_name = 'tracks/track_form.html'
 
     def get_success_url(self, **kwargs):
@@ -57,8 +60,9 @@ class TrackUpdateView(UpdateView):
         context['page_title'] = 'Update Track'
         return context
 
-class TrackDeleteView(DeleteView):
+class TrackDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Track
+    permission_required = 'tracks.delete_track'
     template_name = 'tracks/track_form.html'
     success_url = reverse_lazy('tracks:list')
 

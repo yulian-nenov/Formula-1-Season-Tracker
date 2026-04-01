@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="error-page">
+
+    <div class="error-card">
+        <h1 class="error-code">403</h1>
+
+        <h2 class="error-title">Permission Denied</h2>
+
+        <p class="error-message">
+            You don’t have permission to access this page.
+            If you believe this is a mistake, please contact support or try logging in with a different account.
+        </p>
+
+        <div class="error-actions">
+            <a href="{% url 'common:home' %}" class="btn primary">Home</a>
+
+            {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}" class="btn secondary">Login</a>
+            {% endif %}
+        </div>
+    </div>
+
+</section>
+{% endblock %}

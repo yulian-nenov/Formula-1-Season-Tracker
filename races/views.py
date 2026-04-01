@@ -1,10 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Sum
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from common.mixins import OwnerOnlyMixin
 from drivers.models import Driver
 from races.forms import RaceCreateForm, RaceEditForm, RaceDeleteForm, ResultCreateForm, ResultEditForm, ResultDeleteForm
 from races.models import Race, Result
@@ -21,10 +23,12 @@ class RaceDetailView(DetailView):
     model = Race
     context_object_name = 'race'
 
-class RaceCreateView(CreateView):
+class RaceCreateView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMixin, CreateView):
     model = Race
     form_class = RaceCreateForm
     template_name = 'races/race-form.html'
+    owner_field = 'started_by'
+    permission_required = 'races.add_race'
     success_url = reverse_lazy('races:race_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -33,9 +37,18 @@ class RaceCreateView(CreateView):
         context['model'] = 'Race'
         return context
 
-class RaceUpdateView(UpdateView):
+    def form_valid(self, form):
+        race = form.save(commit=False)
+        race.started_by = self.request.user
+        race.save()
+        return super().form_valid(form)
+
+
+class RaceUpdateView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMixin, UpdateView):
     model = Race
     form_class = RaceEditForm
+    owner_field = 'started_by'
+    permission_required = 'races.change_race'
     template_name = 'races/race-form.html'
 
     def get_success_url(self):
@@ -47,9 +60,11 @@ class RaceUpdateView(UpdateView):
         context['model'] = 'Race'
         return context
 
-class RaceDeleteView(DeleteView):
+class RaceDeleteView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMixin, DeleteView):
     model = Race
     template_name = 'races/race-form.html'
+    owner_field = 'started_by'
+    permission_required = 'races.delete_race'
     success_url = reverse_lazy('races:race_list')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -63,9 +78,10 @@ class RaceDeleteView(DeleteView):
 
 # Results
 
-class ResultCreateView(CreateView):
+class ResultCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Result
     form_class = ResultCreateForm
+    permission_required = 'races.add_result'
     template_name = 'races/race-form.html'
     success_url = reverse_lazy('races:race_list')
 
@@ -75,8 +91,15 @@ class ResultCreateView(CreateView):
         context['model'] = 'Result'
         return context
 
-class ResultUpdateView(UpdateView):
+    def form_valid(self, form):
+        result = form.save(commit=False)
+        result.owner = self.request.user
+        result.save()
+        return super().form_valid(form)
+
+class ResultUpdateView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMixin, UpdateView):
     model = Result
+    permission_required = 'races.change_result'
     form_class = ResultEditForm
     template_name = 'races/race-form.html'
 
@@ -89,8 +112,9 @@ class ResultUpdateView(UpdateView):
         context['model'] = 'Result'
         return context
 
-class ResultDeleteView(DeleteView):
+class ResultDeleteView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMixin, DeleteView):
     model = Result
+    permission_required = 'races.delete_result'
     template_name = 'races/race-form.html'
 
     def get_success_url(self):

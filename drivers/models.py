@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Sum
@@ -13,6 +14,14 @@ class Driver(models.Model):
         validators=[
             MinLengthValidator(3),
         ]
+    )
+
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='drivers',
+        null=True,
+        blank=True,
     )
 
     number = models.PositiveIntegerField(

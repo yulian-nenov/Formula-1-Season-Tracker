@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
 from django.db.models import Q
@@ -16,6 +17,14 @@ class Race(BaseTimeStamp):
         validators=[
             MaxValueValidator(24)
         ],
+    )
+
+    started_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="started_by_user",
+        null=True,
+        blank=True,
     )
 
     weather = models.CharField(
@@ -55,6 +64,14 @@ class Result(models.Model):
         Race,
         on_delete=models.CASCADE,
         related_name="results",
+    )
+
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_results",
+        null=True,
+        blank=True,
     )
 
     driver = models.ForeignKey(

@@ -8,18 +8,28 @@
         </div>
         <nav>
             <ul class="nav-links">
-                <li><a href="{% url 'common:home' %}">Home</a></li>
-                <li><a href="{% url 'teams:list' %}">Teams</a></li>
-                <li><a href="{% url 'drivers:list' %}">Drivers</a></li>
-                <li><a href="{% url 'races:race_list' %}">Races</a></li>
-                <li><a href="{% url 'tracks:list' %}">Tracks</a></li>
-                <li><a href="{% url 'races:standings' %}" class="cta">Standings</a></li>
+                <li><a class="nav-element" href="{% url 'common:home' %}">Home</a></li>
+                <li><a class="nav-element" href="{% url 'teams:list' %}">Teams</a></li>
+                <li><a class="nav-element" href="{% url 'drivers:list' %}">Drivers</a></li>
+                <li><a class="nav-element" href="{% url 'races:race_list' %}">Races</a></li>
+                <li><a class="nav-element" href="{% url 'tracks:list' %}">Tracks</a></li>
+{#                {% if not user.is_authenticated %}#}
+{#                    <li><a href="{% url 'accounts:login' %}">Log in</a></li>#}
+{#                {% endif %}#}
+                <li><a href="{% url 'races:standings' %}" class="cta nav-element">Standings</a></li>
                 {% if user.is_authenticated %}
+                    <form action="{% url 'accounts:logout' %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn ">Logout</button>
+                    </form>
                 	<li>
                         <a href="{% url 'accounts:detail' user.pk %}">
                             <img class="profile-picture" src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
                         </a>
                     </li>
+                {% else %}
+                    <li><a href="{% url 'accounts:login' %}" class="btn">Log in</a></li>
+                    <li><a href="{% url 'accounts:register' %}" class="btn">Register</a></li>
                 {% endif %} 
             </ul>
         </nav>
