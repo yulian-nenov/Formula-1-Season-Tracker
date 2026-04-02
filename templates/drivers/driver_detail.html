@@ -29,11 +29,12 @@
                 <span class="status-badge status-badge--inactive">Driver is a rookie</span>
             {% endif %}
 
+            {% if user.is_authenticated and user == driver.owner and perms.drivers.delete_driver and perms.drivers.change_driver %}
             <div class="actions-bottom">
                     <a href="{% url 'drivers:edit' driver.pk %}" class="card-btn ">Edit Driver</a>
                     <a href="{% url 'drivers:delete' driver.pk %}" class="card-btn dark-btn">Delete Driver</a>
             </div>
-
+            {% endif %}
 
         </div>
     </div>

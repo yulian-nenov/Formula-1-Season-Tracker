@@ -5,6 +5,7 @@ from django.db.models import Q
 
 from common.models import BaseTimeStamp
 from races.choices import WeatherChoices, StatusChoices
+from drivers.tasks import recalculate_driver_stats_task
 
 
 class Race(BaseTimeStamp):
@@ -52,11 +53,12 @@ class Race(BaseTimeStamp):
         return self.name
 
     def delete(self, *args, **kwargs) -> None:
+        from drivers.tasks import recalculate_driver_stats_task
         drivers = set(result.driver for result in self.results.all())
         super().delete(*args, **kwargs)
 
         for driver in drivers:
-            driver.recalculate_driver_stats()
+            recalculate_driver_stats_task.delay(driver.pk)
 
 
 class Result(models.Model):
@@ -119,11 +121,11 @@ class Result(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         super().save(*args, **kwargs)
-        self.driver.recalculate_driver_stats()
+        recalculate_driver_stats_task.delay(self.driver.pk)
 
     def delete(self, *args, **kwargs) -> None:
         super().delete(*args, **kwargs)
-        self.driver.recalculate_driver_stats()
+        recalculate_driver_stats_task.delay(self.driver.pk)
 
     class Meta:
         unique_together = [

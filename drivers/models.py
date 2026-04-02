@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator, MaxValueValidator
 from django.db import models
-from django.db.models import Sum
-
-from drivers.validators import AvailableSlotValidator
-from races.models import Result
+# from django.db.models import Sum
+#
+# from drivers.validators import AvailableSlotValidator
+# from races.models import Result
 
 
 class Driver(models.Model):
@@ -74,13 +74,13 @@ class Driver(models.Model):
     def __str__(self) -> str:
         return self.name
 
-    def recalculate_driver_stats(self) -> None:
-        results = self.results.all()
-
-        self.total_points = (results.aggregate(total=Sum("points_awarded"))["total"] or 0)
-
-        self.wins = results.filter(finishing_position=1).count()
-        self.podiums = results.filter(finishing_position__lte=3).count()
-        self.dnfs = results.filter(status="DNF").count()
-
-        self.save()
+    # def recalculate_driver_stats(self) -> None:
+    #     results = self.results.all()
+    #
+    #     self.total_points = (results.aggregate(total=Sum("points_awarded"))["total"] or 0)
+    #
+    #     self.wins = results.filter(finishing_position=1).count()
+    #     self.podiums = results.filter(finishing_position__lte=3).count()
+    #     self.dnfs = results.filter(status="DNF").count()
+    #
+    #     self.save()
