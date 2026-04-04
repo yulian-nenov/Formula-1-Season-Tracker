@@ -37,7 +37,7 @@
             <h2>Favorite Tracks</h2>
 
             <div class="tracks-wrapper">
-                {% for track in user.profile.favorite_tracks.all %}
+                {% for track in profile.favorite_tracks.all %}
                     <div class="driver-card">
                         <img src="{{ track.image_url }}" alt="Track image">
                         <a href="{% url 'tracks:details' track.pk %}"><h3>{{ track.name }}</h3></a>

@@ -118,7 +118,7 @@ class ResultUpdateView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMix
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Create Result'
+        context['page_title'] = 'Edit Result'
         context['model'] = 'Result'
         return context
 

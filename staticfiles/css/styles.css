@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Orbitron:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+@import 'nav.css';
+@import 'footer.css';
+@import 'home.css';
+@import 'button.css';
+@import 'card.css';
+@import 'teamList.css';
+@import 'form.css';
+@import 'teamDetails.css';
+@import 'global.css';
+@import 'driverList.css';
+@import 'driverDetails.css';
+@import 'table.css';
+@import 'track.css';
+@import '403.css';

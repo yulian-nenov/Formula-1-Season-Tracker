@@ -2,7 +2,6 @@
 
 import django.core.validators
 import django.db.models.deletion
-import drivers.validators
 from django.db import migrations, models
 
 
@@ -29,7 +28,7 @@ class Migration(migrations.Migration):
                 ('dnfs', models.PositiveIntegerField(blank=True, default=0)),
                 ('wins', models.PositiveIntegerField(blank=True, default=0)),
                 ('image', models.URLField()),
-                ('team', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='drivers', to='teams.team', validators=[drivers.validators.AvailableSlotValidator(max_value=2, message='A team can have a maximum of 2 drivers!')])),
+                ('team', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='drivers', to='teams.team',)),
             ],
         ),
     ]

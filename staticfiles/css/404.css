@@ -1,0 +1,54 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #111 0%, #1c1c1c 100%);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.error-container {
+    text-align: center;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.error-code {
+    font-size: 120px;
+    margin: 0;
+    font-weight: 800;
+    color: #ED1131;
+    letter-spacing: 5px;
+}
+
+.error-title {
+    font-size: 32px;
+    margin: 10px 0 20px 0;
+    font-weight: 600;
+}
+
+.error-message {
+    font-size: 18px;
+    color: #cccccc;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.home-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #ED1131;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.home-btn:hover {
+    background-color: #c40f29;
+    transform: translateY(-2px);
+}

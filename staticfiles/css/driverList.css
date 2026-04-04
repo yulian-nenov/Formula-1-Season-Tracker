@@ -1,0 +1,31 @@
+.driver-top {
+    display: flex;
+    align-items: flex-end;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+
+.driver-list-card {
+    padding: 1em;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.driver-list-card hr {
+    margin: 1em 0;
+}
+
+.driver-top img {
+    height: 200px;
+    width: auto;
+    object-fit: fill;
+}
+
+.driver-number {
+    color: red;
+    font: inherit;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 40px;
+}
