@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from FormulaSeasonTracker import settings
+from drivers import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +28,7 @@ urlpatterns = [
     path('teams/', include('teams.urls')),
     path('drivers/', include('drivers.urls')),
     path('accounts/', include('accounts.urls')),
+    path('api/drivers/<int:pk>', views.DriverDetailAPIView.as_view()),
     path('', include('races.urls')),
 ]
 

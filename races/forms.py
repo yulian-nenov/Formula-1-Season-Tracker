@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from common.mixins import ReadOnlyFormFieldsMixin
+from drivers.models import Driver
 from races.models import Race, Result
 
 
@@ -51,10 +52,16 @@ class RaceDeleteForm(ReadOnlyFormFieldsMixin, RaceFormBase):
 # Result forms
 
 class ResultCreateForm(ResultFormBase):
-    pass
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+        self.fields['driver'].queryset = Driver.objects.filter(owner=user)
 
 class ResultEditForm(ResultFormBase):
-    pass
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+        self.fields['driver'].queryset = Driver.objects.filter(owner=user)
 
 class ResultDeleteForm(ReadOnlyFormFieldsMixin, ResultFormBase):
     pass

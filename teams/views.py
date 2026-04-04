@@ -1,5 +1,5 @@
-from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum, QuerySet
 from django.http import HttpRequest, HttpResponse

@@ -13,6 +13,6 @@ def recalculate_driver_stats_task(driver_id):
         driver.podiums = results.filter(finishing_position__lte=3).count()
         driver.dnfs = results.filter(status="DNF").count()
 
-        driver.save()
+        driver.save(update_fields=["total_points", "wins", "podiums", "dnfs"])
     except Driver.DoesNotExist:
         pass

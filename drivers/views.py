@@ -1,10 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from rest_framework import permissions
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from common.mixins import OwnerOnlyMixin
 from drivers.forms import DriverCreateForm, DriverEditForm, DriverDeleteForm
 from drivers.models import Driver
+from drivers.serializers import DriverSerializer
 from races.models import Result
 
 class DriverListView(ListView):
@@ -84,3 +87,13 @@ class DriverDeleteView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMix
         context['form'] = DriverDeleteForm(instance=self.object)
         context['page_title'] = 'Delete Driver'
         return context
+
+# RESTful API
+class IsOwnerOrStaff(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_staff or obj.team.owner == request.user
+
+class DriverDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Driver.objects.all()
+    serializer_class = DriverSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrStaff]

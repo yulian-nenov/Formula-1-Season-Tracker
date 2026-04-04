@@ -23,7 +23,7 @@ class RaceDetailView(DetailView):
     model = Race
     context_object_name = 'race'
 
-class RaceCreateView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMixin, CreateView):
+class RaceCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Race
     form_class = RaceCreateForm
     template_name = 'races/race-form.html'
@@ -91,6 +91,11 @@ class ResultCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         context['model'] = 'Result'
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         result = form.save(commit=False)
         result.owner = self.request.user
@@ -105,6 +110,11 @@ class ResultUpdateView(LoginRequiredMixin, PermissionRequiredMixin, OwnerOnlyMix
 
     def get_success_url(self):
         return reverse_lazy('races:race_details', kwargs={'pk': self.object.race.pk})
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

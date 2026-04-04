@@ -14,6 +14,8 @@ from pathlib import Path
 
 import os
 from dotenv import load_dotenv
+from celery.schedules import crontab
+
 
 
 
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_celery_beat',
+    'rest_framework',
 ] + PROJECT_APPS
 
 MIDDLEWARE = [
@@ -149,3 +152,11 @@ LOGIN_URL = 'accounts:login'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")
+
+
+CELERY_BEAT_SCHEDULE = {
+    "delete-races-every-24-hours": {
+        "task": "races.tasks.delete_all_races_task",
+        "schedule": crontab(hour="0", minute="0"),
+    },
+}
