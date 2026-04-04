@@ -6,7 +6,9 @@
     <div class="container">
         <section class="page-header">
             <h1 class="page-title">F1 Teams</h1>
-            <a href="{% url 'teams:create' %}" class="btn primary">+ Add Team</a>
+            {% if perms.teams.add_team %}
+                <a href="{% url 'teams:create' %}" class="btn primary">+ Add Team</a>
+            {% endif %}
         </section>
 
         <section class="teams-section">
