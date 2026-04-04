@@ -10,7 +10,9 @@
     <!-- TEAM HEADER -->
     <div class="feature-card header-card">
         <div class="team-header-left">
-            <img class="profile-picture" src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}">
+            {% if profile.profile_picture %}
+                <img class="profile-picture" src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}">
+            {% endif %}
         </div>
 
         <div class="header-right">

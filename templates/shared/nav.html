@@ -24,7 +24,12 @@
                     </form>
                 	<li>
                         <a href="{% url 'accounts:detail' user.pk %}">
-                            <img class="profile-picture" src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
+                            {% if user.profile.profile_picture %}
+                                <img class="profile-picture" src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
+
+                            {% else %}
+                                <p>{{ user.username }}</p>
+                            {% endif %}
                         </a>
                     </li>
                 {% else %}
