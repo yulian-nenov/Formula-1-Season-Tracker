@@ -45,6 +45,7 @@ Based on the Django applications, the project includes functionalities for:
   - `Race`
   - `RaceResult`
   - `Driver`
+  - `Track` (only for users in the `TrackAdmin` group)
 
 ## Installation Guide
 
@@ -65,8 +66,12 @@ cd <project-directory>
 
     - `DJANGO_SECRET_KEY`: Secret key
     - `DEBUG`: True for development, False for production
+    - `CSRF_TRUSTED_ORIGINS`: URLs, which the application should accept CSFR tokens from, separated by a comma 
     - `ALLOWED_HOSTS`: Allowed hosts separated by commas, default ones are added for you
     - `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`: Database settings
+    - `CELERY_BROKER_URL`, `CELERY_RESULT_BACKEND`: Celery settings, should be a valid redis database (local or cloud)
+      - **FOR EXAMINERS:** If you do not have a redis database, you can use mine with the following url (use it for both celery environment variables): `redis://default:617oYzZFyIlJrIdNwMJWztsVTcFPlMJX@redis-12171.c282.east-us-mz.azure.cloud.redislabs.com:12171`  
+      Will be deleted after assessment.
     
 ### 3. Create Virtual Environment
 
@@ -94,15 +99,9 @@ pip install -r requirements.txt
 ```sh
 python manage.py migrate
 ```
+- 3 Tracks will be added automatically
 
-### 6. Load Sample Data (Optional)
-
-```sh
-python manage.py load_sample_data
-```
-This will load 3 teams with car models, 3 drivers, 3 tracks, 2 races and 2 race results
-
-### 7. Create Superuser (Admin Access)
+### 6. Create Superuser (Admin Access)
 
 
 ```sh
@@ -111,7 +110,7 @@ python manage.py createsuperuser
 
 Follow the prompts to set username, email, and password.
 
-### 8. Run the Development Server
+### 7. Run the Development Server
 
 - `DEBUG=True`
 ```sh
