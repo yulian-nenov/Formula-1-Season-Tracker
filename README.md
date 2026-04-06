@@ -310,6 +310,15 @@ returns the finishing position.
 ---
 ###
 
+## API Endpoints
+
+---
+
+Currently, there is **one** API endpoint implemented. The URL to access it is:
+- `api/drivers/<driver_id>`  
+
+It utilizes the methods `GET`, `PUT`, `PATCH`,  and `DELETE` for a selected driver.
+
 ## Mixins
 
 ---
