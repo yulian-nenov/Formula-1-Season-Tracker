@@ -73,11 +73,11 @@ cd <project-directory>
 
     - `DJANGO_SECRET_KEY`: Secret key
     - `DEBUG`: True for development, False for production
-    - `CSRF_TRUSTED_ORIGINS`: URLs, which the application should accept CSFR tokens from, separated by a comma 
+    - `CSRF_TRUSTED_ORIGINS`: URLs, which the application should accept CSRF tokens from, separated by a comma 
     - `ALLOWED_HOSTS`: Allowed hosts separated by commas, default ones are added for you
     - `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`: Database settings
     - `CELERY_BROKER_URL`, `CELERY_RESULT_BACKEND`: Celery settings, should be a valid redis database (local or cloud)
-      - **FOR EXAMINERS:** If you do not have a redis database, you can use mine with the following url (use it for both celery environment variables): `redis://default:rhwtfoLb77Qw2wv0h7TpOib9uzoen1PE@redis-18776.c282.east-us-mz.azure.cloud.redislabs.com:18776`  
+      - **FOR EXAMINERS:** If you do not have a redis database, you can use mine with the following URL (use it for both celery environment variables): `redis://default:rhwtfoLb77Qw2wv0h7TpOib9uzoen1PE@redis-18776.c282.east-us-mz.azure.cloud.redislabs.com:18776`  
       Will be deleted after assessment.
     
 ### 3. Create Virtual Environment
@@ -106,7 +106,7 @@ pip install -r requirements.txt
 ```sh
 python manage.py migrate
 ```
-- 3 Tracks will be added automatically
+- Three Tracks will be added automatically
 
 ### 6. Create Superuser (Admin Access)
 
@@ -278,16 +278,16 @@ Represents a Formula 1 circuit.
 ### Race Model
 Represents a Grand Prix event.
 
-| Field Name     | Type                                           | Description                            |
-|:---------------|:-----------------------------------------------|:---------------------------------------|
-| `name`         | CharField                                      | Race name                              |
-| `round_number` | PositiveIntegerField                           | Championship round                     |
-| `weather`      | CharField                                      | Weather conditions                     |
-| `laps`         | PositiveIntegerField                           | Total laps                             |
-| `date`         | DateTimeField                                  | Race date and time                     |
-| `track`        | ForeignKey -> Track                            | Hosting circuit                        |
-| `drivers`      | ManyToManyField -> Driver (through RaceResult) | Drivers participating                  |
-| `started_by`   | ForeignKey -> User                             | Refers to user, who initiated the race |
+| Field Name     | Type                                           | Description                                |
+|:---------------|:-----------------------------------------------|:-------------------------------------------|
+| `name`         | CharField                                      | Race name                                  |
+| `round_number` | PositiveIntegerField                           | Championship round                         |
+| `weather`      | CharField                                      | Weather conditions                         |
+| `laps`         | PositiveIntegerField                           | Total laps                                 |
+| `date`         | DateTimeField                                  | Race date and time                         |
+| `track`        | ForeignKey -> Track                            | Hosting circuit                            |
+| `drivers`      | ManyToManyField -> Driver (through RaceResult) | Drivers participating                      |
+| `started_by`   | ForeignKey -> User                             | Refers to the user, who initiated the race |
 
 ---
 ### RaceResult Model
@@ -416,9 +416,16 @@ Security is handled through:
 - Environment variable configuration
 - Hidden SECRET_KEY
 - Proper ALLOWED_HOSTS configuration
+- Usage of CSRF_ALLOWED_HOSTS
 - DEBUG disabled in production
 - CSRF protection
 - Separation of database credentials
+
+## Testing
+
+To ensure the app works properly in the future, tests are included as well:
+- Currently, there are a total of **26** tests for this project
+- They can be found in the `tests` directory
 
 ## Error Handling
 
