@@ -13,9 +13,6 @@
                 <li><a class="nav-element" href="{% url 'drivers:list' %}">Drivers</a></li>
                 <li><a class="nav-element" href="{% url 'races:race_list' %}">Races</a></li>
                 <li><a class="nav-element" href="{% url 'tracks:list' %}">Tracks</a></li>
-{#                {% if not user.is_authenticated %}#}
-{#                    <li><a href="{% url 'accounts:login' %}">Log in</a></li>#}
-{#                {% endif %}#}
                 <li><a href="{% url 'races:standings' %}" class="cta nav-element">Standings</a></li>
                 {% if user.is_authenticated %}
                     <form action="{% url 'accounts:logout' %}" method="post">
@@ -28,7 +25,7 @@
                                 <img class="profile-picture" src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
 
                             {% else %}
-                                <p>{{ user.username }}</p>
+                                <a href="{% url 'accounts:detail' user.pk %}" class="cta nav-element">Account</a>
                             {% endif %}
                         </a>
                     </li>

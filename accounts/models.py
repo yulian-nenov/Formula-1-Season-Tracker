@@ -13,7 +13,6 @@ class Profile(models.Model):
     )
     profile_picture = models.ImageField(
         upload_to='profile/',
-        default='profile/default.png',
         validators=[
             FileExtensionValidator(['png', 'jpg', 'jpeg']),
             MaxSizeValidator(max_size=3),

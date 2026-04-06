@@ -6,6 +6,12 @@
 ---
 The Formula 1 Season Tracker is a Django-based web application designed to manage and track various aspects of a Formula racing season. This application allows users to keep records of drivers, teams, races, and their respective results, providing a comprehensive overview of the racing season.
 
+
+### Deployment
+This application is deployed using `Azure`. Follow the link to access the application.
+
+**Official URL:** https://formulaseasontracker-f8d6cme7h4hcethv.switzerlandnorth-01.azurewebsites.net/
+
 ## Application Preview
 
 ---
@@ -50,6 +56,7 @@ Based on the Django applications, the project includes functionalities for:
 ## Installation Guide
 
 ---
+Follow the steps only if you want to run the project locally on your machine.
 ### 1️. Clone the Repository
 
 ```sh
@@ -70,7 +77,7 @@ cd <project-directory>
     - `ALLOWED_HOSTS`: Allowed hosts separated by commas, default ones are added for you
     - `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`: Database settings
     - `CELERY_BROKER_URL`, `CELERY_RESULT_BACKEND`: Celery settings, should be a valid redis database (local or cloud)
-      - **FOR EXAMINERS:** If you do not have a redis database, you can use mine with the following url (use it for both celery environment variables): `redis://default:617oYzZFyIlJrIdNwMJWztsVTcFPlMJX@redis-12171.c282.east-us-mz.azure.cloud.redislabs.com:12171`  
+      - **FOR EXAMINERS:** If you do not have a redis database, you can use mine with the following url (use it for both celery environment variables): `redis://default:rhwtfoLb77Qw2wv0h7TpOib9uzoen1PE@redis-18776.c282.east-us-mz.azure.cloud.redislabs.com:18776`  
       Will be deleted after assessment.
     
 ### 3. Create Virtual Environment
@@ -123,7 +130,20 @@ python manage.py runserver --insecure
 ````
 If `DEBUG=False` and you run the wrong command, static files will not load.
 
-## Usage
+### 8. Start `Celery`
+
+In a new terminal:
+```sh
+celery -A FormulaSeasonTracker worker -l info --pool=threads
+```
+
+In a new terminal:
+
+```sh
+celery -A FormulaSeasonTracker beat -l info
+```
+
+### 9. Usage
 
 ---
 *   Navigate to `http://127.0.0.1:8000/` in your web browser.
@@ -138,6 +158,8 @@ The application follows Django’s modular architecture by separating functional
 - `drivers` 
 - `races` 
 - `common`
+- `tracks`
+- `accounts`
 
 Each app is responsible for a clearly defined domain, ensuring separation of concerns and maintainability.
 
@@ -145,11 +167,34 @@ The project adheres to the Model–View–Template (MVT) pattern:
 
 - **Models** handle data representation and business rules.
 
-- **Views** manage application logic and request handling.
+- **Views** manage application logic and request handling, most of them are class-based.
 
 - **Templates** define presentation and user interface.
 
 - **Forms** handle validation and data processing.
+
+## Django User Model Extension
+
+---
+A model called `Profile` utilizes a One-to-One relationship with the `User` model
+
+
+| Field Name        | Type                     | Description                        |
+|:------------------|:-------------------------|:-----------------------------------|
+| `profile_picture` | ImageField               | Profile picture of a user          |
+| `favorite_tracks` | Many-to-Many to `Tracks` | Indicates a user's favorite tracks |
+
+The application also handles media files. `Pillow` is used for `ImageField`.  
+A custom validator, `MaxSizeValidator`, checks whether the profile picture is under a certain amount of `MB`.
+
+## User Groups
+
+---
+The user groups are defined in the Django admin. There are **two** of them currently:
+- `Users` - automatically assigned on user creation through a signal
+  - They have CRUD access for the following models: `Race`, `Result`, `Driver`, `Team`
+- `TrackAdmins` - only assigned through Django Administration
+  - They only have CRUD access to the `Track` model
 
 
 ## Models
@@ -168,14 +213,15 @@ Abstract class, does not create a database table.
 
 Represents a Formula 1 constructor.
 
-| Field Name        | Type      | Description                 |
-|:------------------|:----------|:----------------------------|
-| `name`            | CharField | Official team name          |
-| `principal`       | CharField | Team principal              |
-| `base_country`    | CharField | Country where team is based |
-| `engine_supplier` | CharField | Engine manufacturer         |
-| `team_color`      | CharField | Hexadecimal UI color        |
-| `logo_image_url`  | URLField  | URL to team logo            |
+| Field Name        | Type               | Description                  |
+|:------------------|:-------------------|:-----------------------------|
+| `name`            | CharField          | Official team name           |
+| `principal`       | CharField          | Team principal               |
+| `base_country`    | CharField          | Country where team is based  |
+| `engine_supplier` | CharField          | Engine manufacturer          |
+| `team_color`      | CharField          | Hexadecimal UI color         |
+| `logo_image_url`  | URLField           | URL to team logo             |
+| `owner`           | ForeignKey -> User | Indicates team's owner       |
 
 
 #### Relationships:
@@ -211,6 +257,7 @@ Represents a Formula 1 driver.
 | `total_points`  | PositiveIntegerField | Accumulated points                                       |
 | `podiums`       | PositiveIntegerField | Podium finishes                                          |
 | `dnfs`          | PositiveIntegerField | Number of times driver **D**id **N**ot **F**inish a race |
+| `owner`         | ForeignKey -> User   | Indicates driver's owner                                 |
 
 ---
 ### Track Model | Inherits `BaseTimeStamp`
@@ -229,15 +276,16 @@ Represents a Formula 1 circuit.
 ### Race Model
 Represents a Grand Prix event.
 
-| Field Name     | Type                                           | Description           |
-|:---------------|:-----------------------------------------------|:----------------------|
-| `name`         | CharField                                      | Race name             |
-| `round_number` | PositiveIntegerField                           | Championship round    |
-| `weather`      | CharField                                      | Weather conditions    |
-| `laps`         | PositiveIntegerField                           | Total laps            |
-| `date`         | DateTimeField                                  | Race date and time    |
-| `track`        | ForeignKey -> Track                            | Hosting circuit       |
-| `drivers`      | ManyToManyField -> Driver (through RaceResult) | Drivers participating |
+| Field Name     | Type                                           | Description                            |
+|:---------------|:-----------------------------------------------|:---------------------------------------|
+| `name`         | CharField                                      | Race name                              |
+| `round_number` | PositiveIntegerField                           | Championship round                     |
+| `weather`      | CharField                                      | Weather conditions                     |
+| `laps`         | PositiveIntegerField                           | Total laps                             |
+| `date`         | DateTimeField                                  | Race date and time                     |
+| `track`        | ForeignKey -> Track                            | Hosting circuit                        |
+| `drivers`      | ManyToManyField -> Driver (through RaceResult) | Drivers participating                  |
+| `started_by`   | ForeignKey -> User                             | Refers to user, who initiated the race |
 
 ---
 ### RaceResult Model
@@ -252,9 +300,13 @@ Stores contextual race performance data.
 | `status`              | CharField            | Race status for driver (Finished, DNF, etc) |
 | `driver`              | ForeignKey -> Driver | Associated driver                           |
 | `race`                | ForeignKey -> Race   | Associated race                             |
+| `owner`               | ForeignKey -> User   | Indicates who created the result            |
 
 `@property` display_finishing_position -> Returns the race status if it is not `Finished`, otherwise,
 returns the finishing position.
+
+---
+###
 
 ## Mixins
 
@@ -273,6 +325,9 @@ class RaceDeleteForm(ReadOnlyFormFieldsMixin, RaceFormBase):
     pass
 ````
 
+### `OwnerOnlyMixin`
+- Inherits `UserPassesTestMixin` and overrides `test_func`
+- Checks whether the request user matches with an object's owner
 ---
 ## Data Integrity & Constraints
 
@@ -296,28 +351,43 @@ The Driver model has a method `recalculate_driver_stats`, which
 recalculates a driver's `total_points`, `wins`, `dnfs` and `podiums`.
 
 ````py
-def recalculate_driver_stats(self) -> None:
-    results = self.results.all()
+@shared_task
+def recalculate_driver_stats_task(driver_id):
+    try:
+        driver = Driver.objects.get(pk=driver_id)
+        results = driver.results.all()
 
-    self.total_points = (results.aggregate(total=Sum("points_awarded"))["total"] or 0)
+        driver.total_points = (results.aggregate(total=Sum("points_awarded"))["total"] or 0)
+        driver.wins = results.filter(finishing_position=1).count()
+        driver.podiums = results.filter(finishing_position__lte=3).count()
+        driver.dnfs = results.filter(status="DNF").count()
 
-    self.wins = results.filter(finishing_position=1).count()
-    self.podiums = results.filter(finishing_position__lte=3).count()
-    self.dnfs = results.filter(status="DNF").count()
+        driver.save(update_fields=["total_points", "wins", "podiums", "dnfs"])
+    except Driver.DoesNotExist:
+        pass
 
-    self.save()
 ````
 
 Usage example in `RaceResult` model:
 ````py
-def save(self, *args, **kwargs) -> None:
-    super().save(*args, **kwargs)
-    self.driver.recalculate_driver_stats()
+    def save(self, *args, **kwargs) -> None:
+        super().save(*args, **kwargs)
+        recalculate_driver_stats_task.delay(self.driver.pk)
 
-def delete(self, *args, **kwargs) -> None:
-    super().delete(*args, **kwargs)
-    self.driver.recalculate_driver_stats()
+    def delete(self, *args, **kwargs) -> None:
+        super().delete(*args, **kwargs)
+        recalculate_driver_stats_task.delay(self.driver.pk)
 ````
+
+## Asynchronous Operations
+
+---
+Currently, there are **two** asynchronous operations implemented using `celery` and a `redis` database:
+- `recalculate_driver_stats_task` used for recalculating a driver's points, wins, DNFs and podiums every time a race
+  result is added, edited or deleted.
+- `delete_all_races_task` deletes all races every 24 hours at a set time. This uses celery beat.
+
+
 ## Optimization
 
 ---
@@ -325,6 +395,7 @@ To improve performance and avoid N+1 query problems, the project utilizes:
 - `select_related()` for ForeignKey joins
 - `prefetch_related()` for ManyToMany joins
 - `annotate()` for aggregated statistics
+- Asynchronous operations using `celery` and `redis`
 
 Example:
 
@@ -350,7 +421,7 @@ Security is handled through:
 ## Error Handling
 
 ---
-- Custom 404 page implemented
+- Custom `404` page implemented as well as one for `403`
   - Note that the custom 404 page will not show if `DEBUG=True`
 - User-friendly validation messages
 
