@@ -117,7 +117,21 @@ python manage.py createsuperuser
 
 Follow the prompts to set username, email, and password.
 
+### 8. Start `Celery`
+
+```sh
+celery -A FormulaSeasonTracker worker -l info --pool=threads
+```
+
+In a new terminal:  
+- Enter the project directory again and also connect to the `venv`.
+```sh
+celery -A FormulaSeasonTracker beat -l info
+```
+
 ### 7. Run the Development Server
+In a new terminal:  
+Enter the project folder again and also connect to the `venv`.
 
 - `DEBUG=True`
 ```sh
@@ -130,18 +144,6 @@ python manage.py runserver --insecure
 ````
 If `DEBUG=False` and you run the wrong command, static files will not load.
 
-### 8. Start `Celery`
-
-In a new terminal:
-```sh
-celery -A FormulaSeasonTracker worker -l info --pool=threads
-```
-
-In a new terminal:
-
-```sh
-celery -A FormulaSeasonTracker beat -l info
-```
 
 ### 9. Usage
 
